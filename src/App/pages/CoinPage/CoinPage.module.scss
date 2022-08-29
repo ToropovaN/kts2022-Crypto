@@ -1,0 +1,39 @@
+@import "../../../../variables.module.scss";
+
+.coinPage {
+    background-color: $White;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.header {
+    width: 100%;
+    display: flex;
+    align-items: center;
+
+    &__smallImg {
+        height: 24px;
+        width: 24px;
+    }
+
+    &__title {
+        font-size: 16px;
+        color: $Black;
+        white-space: nowrap;
+        margin-left: 10px;
+    }
+
+    &__subtitle {
+        font-size: 10px;
+        color: $DarkGreyColor;
+        white-space: nowrap;
+        margin: 0 10px 0 5px;
+    }
+}
+
+.buttonBack {
+    background-color: inherit;
+    outline: none;
+    border: none;
+    width: 30px;
+}

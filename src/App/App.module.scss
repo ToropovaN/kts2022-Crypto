@@ -1,0 +1,11 @@
+@import "../../variables.module.scss";
+
+body {
+    padding: 50px 0;
+    background: $BackgroundColor;
+    width: 50%;
+    min-width: 340px;
+    max-width: 500px;
+    margin: 0 auto;
+    font-family: Arial, Helvetica, sans-serif;
+}

@@ -1,0 +1,27 @@
+@import "../../../../../../variables.module.scss";
+
+.priceBlock {
+    vertical-align: bottom;
+    margin: 15px 0;
+}
+
+.ButtonsBlock {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.mainPrice {
+    font-size: 24px;
+}
+
+.priceChange {
+    margin-left: 8px;
+}
+
+.green {
+    color: $GreenColor;
+}
+
+.red {
+    color: $RedColor;
+}

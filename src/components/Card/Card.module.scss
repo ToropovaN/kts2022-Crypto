@@ -1,0 +1,42 @@
+@import "../../../variables.module.scss";
+
+.card {
+    padding: 16px;
+    font-size: 12px;
+    background: $White;
+    border: none;
+    outline: none;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.075);
+    border-radius: 8px;
+    margin: 10px auto;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+
+
+}
+
+.image {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+
+.titleBlock {
+    height: 100%;
+    margin-left: 16px;
+    text-align: left;
+}
+
+.title {
+    font-size: 16px;
+    margin-bottom: 4px;
+    color: $Black;
+    white-space: nowrap;
+}
+
+.subtitle {
+    font-size: 12px;
+    color: $DarkGreyColor;
+}
