@@ -1,3 +1,5 @@
+import { memo } from "react";
+
 import styles from "./Card.module.scss";
 
 /** Пропсы, которые принимает компонент Card */
@@ -5,35 +7,30 @@ type CardProps = {
   /** URL изображения */
   image: string;
   /** Заголовок карточки */
-  title: React.ReactNode;
+  title: string;
   /** Подзаголовок карточки */
-  subtitle: React.ReactNode;
+  subtitle: string;
   /** Содержимое карточки (футер/боковая часть), может быть пустым */
   content?: React.ReactNode;
   /** Клик на карточку */
   onClick?: React.MouseEventHandler;
 };
 
-export const Card = ({
-  image,
-  title,
-  subtitle,
-  content,
-  onClick,
-}: CardProps) => {
+const Card = ({ image, title, subtitle, content, onClick }: CardProps) => {
   return (
-    <button
+    <div
       onClick={(e) => {
         if (onClick) onClick(e);
       }}
       className={styles.card}
     >
-      <img src={image} alt={image} className={styles.image} />
-      <div className={styles.titleBlock}>
-        <div className={styles.title}>{title}</div>
-        <div className={styles.subtitle}>{subtitle}</div>
+      <img src={image} alt={image} className={styles.card__image} />
+      <div className={styles.card__titleBlock}>
+        <div className={styles.card__title}>{title}</div>
+        <div className={styles.card__subtitle}>{subtitle}</div>
       </div>
       {content}
-    </button>
+    </div>
   );
 };
+export default memo(Card);

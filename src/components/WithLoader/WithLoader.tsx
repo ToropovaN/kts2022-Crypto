@@ -1,10 +1,10 @@
-import { Loader } from "../Loader/Loader";
+import Loader from "@components/Loader/Loader";
 
 export type WithLoaderProps = React.PropsWithChildren<{
   loading: boolean;
 }>;
 
-export const WithLoader = ({ loading, children }: WithLoaderProps) => {
+const WithLoader = ({ loading, children }: WithLoaderProps) => {
   return (
     <div>
       {loading && <Loader></Loader>}
@@ -12,3 +12,5 @@ export const WithLoader = ({ loading, children }: WithLoaderProps) => {
     </div>
   );
 };
+
+export default WithLoader;

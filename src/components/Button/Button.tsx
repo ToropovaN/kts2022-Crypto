@@ -1,6 +1,6 @@
+import Loader from "@components/Loader/Loader";
 import classNames from "classnames";
 
-import { Loader } from "../Loader/Loader";
 import styles from "./Button.module.scss";
 
 /** Возможные раскраски кнопки */
@@ -47,3 +47,5 @@ export const Button = ({
     </button>
   );
 };
+
+export default Button;

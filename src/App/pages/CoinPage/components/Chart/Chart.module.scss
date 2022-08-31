@@ -1,27 +1,25 @@
-@import "../../../../../../variables.module.scss";
+@import "@styles/variables.module.scss";
 
-.priceBlock {
-    vertical-align: bottom;
-    margin: 15px 0;
-}
+.Chart{
+    &__priceBlock {
+        vertical-align: bottom;
+        margin: 15px 0;
+    }
 
-.ButtonsBlock {
-    display: flex;
-    justify-content: space-evenly;
-}
+    &__ButtonsBlock {
+        display: flex;
+        justify-content: space-evenly;
+    }
 
-.mainPrice {
-    font-size: 24px;
-}
+    &__mainPrice {
+        font-size: 24px;
+    }
 
-.priceChange {
-    margin-left: 8px;
-}
+    &__green {
+        color: $GreenColor;
+    }
 
-.green {
-    color: $GreenColor;
-}
-
-.red {
-    color: $RedColor;
+    &__red {
+        color: $RedColor;
+    }
 }

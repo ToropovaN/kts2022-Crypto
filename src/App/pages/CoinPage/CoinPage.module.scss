@@ -1,4 +1,4 @@
-@import "../../../../variables.module.scss";
+@import "@styles/variables.module.scss";
 
 .coinPage {
     background-color: $White;
@@ -21,6 +21,10 @@
         color: $Black;
         white-space: nowrap;
         margin-left: 10px;
+        white-space: nowrap;
+        max-width: 200px;
+        text-overflow: ellipsis;
+        overflow: hidden; 
     }
 
     &__subtitle {
@@ -28,6 +32,9 @@
         color: $DarkGreyColor;
         white-space: nowrap;
         margin: 0 10px 0 5px;
+        max-width: 200px;
+        text-overflow: ellipsis;
+        overflow: hidden; 
     }
 }
 

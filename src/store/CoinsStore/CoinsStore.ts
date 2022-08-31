@@ -1,19 +1,23 @@
-import ApiStore from "../ApiStore/ApiStore";
-import { ChartData, Coin } from "./types";
+import ApiStore from "@store/ApiStore/ApiStore";
+
+import { ChartData, Coin, createQueryString, QueryParams } from "./types";
 
 export default class CoinsStore {
   private readonly apiStore = new ApiStore("https://api.coingecko.com/api/v3");
 
-  async getCoinsList(currency: string): Promise<Coin[]> {
-    let result = this.apiStore.request({
+  async getCoinsList(newQueryParams: QueryParams): Promise<Coin[]> {
+    let result = await this.apiStore.request({
       method: "get",
-      endpoint:
-        `/coins/markets?vs_currency=` +
-        currency +
-        `&order=market_cap_desc&per_page=20&page=1&sparkline=false`,
+        endpoint: "/coins/markets" + createQueryString({
+          vs_currency: newQueryParams.vs_currency || 'usd',
+          order: newQueryParams.order || "market_cap_desc",
+          per_page: newQueryParams.per_page || 20,
+          page: newQueryParams.page ||1,
+          sparkline: newQueryParams.sparkline || false
+        })
     });
 
-    return (await result).data.map((coin: any) => {
+    return result.data.map((coin: Record<string, string>) => {
       return {
         id: coin.id,
         name: coin.name,
@@ -25,13 +29,13 @@ export default class CoinsStore {
     });
   }
 
-  async getCoinsByQuery(query: string): Promise<Coin[]> {
-    let result = this.apiStore.request({
+  async getCoinsByQuery(newQueryParams : QueryParams): Promise<Coin[]> {
+    let result = await this.apiStore.request({
       method: "get",
-      endpoint: "/search?query=" + query,
+      endpoint: "/search" + createQueryString(newQueryParams)
     });
 
-    return (await result).data.coins.map((coin: any) => {
+    return result.data.coins.map((coin: any) => {
       return {
         id: coin.id,
         name: coin.name,
@@ -44,12 +48,12 @@ export default class CoinsStore {
   }
 
   async getCoinDetails(id: string): Promise<Coin> {
-    let result = this.apiStore.request({
+    let result = await this.apiStore.request({
       method: "get",
       endpoint: "/coins/" + id,
     });
 
-    let coin = (await result).data;
+    let coin = result.data;
 
     return {
       id: coin.id,
@@ -61,22 +65,21 @@ export default class CoinsStore {
     };
   }
 
-  async getChart(id: string, days: number): Promise<ChartData> {
-    let result = this.apiStore.request({
+  async getChart(id: string, newQueryParams: QueryParams): Promise<ChartData> {
+    let result = await this.apiStore.request({
       method: "get",
-      endpoint:
-        "/coins/" +
-        id +
-        "/market_chart?vs_currency=usd&days=" +
-        days +
-        "&interval=daily",
+      endpoint: "/coins/" + id + "/market_chart" + createQueryString({
+        vs_currency: newQueryParams.vs_currency || 'usd',
+        days: newQueryParams.days || 7,
+        interval: newQueryParams.interval || 'daily'
+      })
     });
 
-    let chartData: Array<{ x: number; y: number }> = (
-      await result
-    ).data.prices.map((value: number[]) => {
-      return { x: value[0], y: value[1].toFixed(2) };
-    });
+    let chartData: Array<{ x: number; y: number }> = result.data.prices.map(
+      (value: number[]) => {
+        return { x: value[0], y: value[1].toFixed(2) };
+      }
+    );
 
     let firstPrice = chartData[0].y;
     let lastPrice = chartData[chartData.length - 1].y;

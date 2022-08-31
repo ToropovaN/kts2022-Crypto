@@ -1,71 +1,65 @@
-@import "../../../variables.module.scss";
+@import "@styles/variables.module.scss";
 
 .loader {
     position: relative;
     margin: auto;
-}
 
-.ellipse {
-    position: absolute;
-    border-radius: 50%;
-    width: 100%;
-    height: 100%;
-    box-sizing: border-box;
-}
+    &__ellipse {
+        position: absolute;
+        border-radius: 50%;
+        width: 100%;
+        height: 100%;
+        box-sizing: border-box;
 
-.polygon {
-    content: '';
-    width: 0px;
-    height: 0px;
-    position: relative;
-    left: -6px;
-    animation: loadingAnimation 1s linear 0s infinite;
-}
+        &.size-s {
+            border: 3px solid $DarkGreyColor;
+        }
+        &.size-m {
+            border: 4.5px solid $DarkGreyColor;
+        }
+        &.size-l {
+            border: 6px solid $DarkGreyColor;
+        }
+    }
 
-.size-s {
-    width: 20px;
-    height: 20px;
-}
+    &__polygon {
+        content: '';
+        width: 0px;
+        height: 0px;
+        position: relative;
+        left: -6px;
+        animation: loadingAnimation 1s linear 0s infinite;
 
-.ellipse.size-s {
-    border: 3px solid $DarkGreyColor;
-}
+        &.size-s {
+            border: 10px solid transparent;
+            border-right: 16px solid $White;
+            border-left: 16px solid transparent;
+        }
+        &.size-m {
+            border: 20px solid transparent;
+            border-right: 26px solid $White;
+            border-left: 26px solid transparent;
+        }
+        &.size-l {
+            border: 30px solid transparent;
+            border-right: 36px solid $White;
+            border-left: 36px solid transparent;
+        }
+    }
 
-.polygon.size-s {
-    border: 10px solid transparent;
-    border-right: 16px solid $White;
-    border-left: 16px solid transparent;
-}
+    &.size-s {
+        width: 20px;
+        height: 20px;
+    }
+    &.size-m {
+        width: 40px;
+        height: 40px;
+    }
+    &.size-l {
+        width: 60px;
+        height: 60px;
+    }
 
-.loader.size-m {
-    width: 40px;
-    height: 40px;
-}
-
-.ellipse.size-m {
-    border: 4.5px solid $DarkGreyColor;
-}
-
-.polygon.size-m {
-    border: 20px solid transparent;
-    border-right: 26px solid $White;
-    border-left: 26px solid transparent;
-
-}
-
-.loader.size-l {
-    width: 60px;
-    height: 60px;
-}
-
-.ellipse.size-l {
-    border: 6px solid $DarkGreyColor;
-}
-
-.polygon.size-l {
-    border: 30px solid transparent;
-    border-right: 36px solid $White;
-    border-left: 36px solid transparent;
 
 }
 

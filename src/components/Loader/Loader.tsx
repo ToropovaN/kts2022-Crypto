@@ -3,7 +3,7 @@ import classNames from "classnames";
 import styles from "./Loader.module.scss";
 
 /** Возможные значения размера лоадера */
-enum LoaderSize {
+export enum LoaderSize {
   s = "s",
   m = "m",
   l = "l",
@@ -28,7 +28,7 @@ type LoaderProps = {
   className?: string;
 };
 
-export const Loader = ({
+const Loader = ({
   loading = true,
   size = LoaderSize.m,
   className,
@@ -37,9 +37,15 @@ export const Loader = ({
   if (loading)
     return (
       <div className={classNames(styles.loader, styles[sizeClass], className)}>
-        <div className={classNames(styles.ellipse, styles[sizeClass])} />
-        <div className={classNames(styles.polygon, styles[sizeClass])} />
+        <div
+          className={classNames(styles.loader__ellipse, styles[sizeClass])}
+        />
+        <div
+          className={classNames(styles.loader__polygon, styles[sizeClass])}
+        />
       </div>
     );
   else return null;
 };
+
+export default Loader;

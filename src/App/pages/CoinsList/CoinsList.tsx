@@ -1,60 +1,61 @@
 import React, { useEffect, useState } from "react";
 
-import { Card } from "@components/Card/Card";
-import { CardContent } from "@components/CardContent/CardContent";
-import CoinsStore from "@store/CoinsStore/CoinsStore";
-import { Coin } from "@store/CoinsStore/types";
+import Card from "@components/Card/Card";
+import CardContent from "@components/CardContent/CardContent";
+import { Categories, Coin, Currencies, PageProps } from "@store/CoinsStore/types";
 import { useNavigate } from "react-router-dom";
 
 import styles from "./CoinsList.module.scss";
-import { Input } from "./components/Input/Input";
+import InfoHeader from "./components/InfoHeader/InfoHeader";
+import SearchHeader from "./components/SearchHeader/SearchHeader";
+import { Option } from "@components/MultiDropdown/MultiDropdown";
+import { CategoryScale } from "chart.js";
 
-const CoinsList = () => {
+const CoinsList = ({ coinsStore }: PageProps) => {
   const navigate = useNavigate();
 
   const [coins, setCoins] = useState<Coin[]>([]);
 
-  //const [currency, setCurrency] = useState<string>("usd");
-  const currency = "usd";
-
+  const [currency, setCurrency] = useState<Option>(Currencies[0]);
   const [query, setQuery] = useState<string>("");
+  const [сategory, setCategory] = useState<string>(Categories[0]);
+
+  const [isSearchActive, setIsSearchActive] = useState<boolean>(false);
 
   useEffect(() => {
-    const coinStore = new CoinsStore();
     if (query === "") {
-      coinStore.getCoinsList(currency).then((result) => {
+      coinsStore.getCoinsList({vs_currency: currency.value}).then((result) => {
         setCoins(result);
       });
     } else {
-      coinStore.getCoinsByQuery(query).then((result) => {
+      coinsStore.getCoinsByQuery({query: query}).then((result) => {
         setCoins(result);
       });
     }
-  }, [query]);
+  }, [query, currency]);
 
   return (
     <>
-      <div className={styles.Search}>
-        <Input
-          value={query}
-          placeholder={"Search Cryptocurrency"}
-          onChange={(newQuery) => {
-            setQuery(newQuery);
-          }}
-        ></Input>
+      {isSearchActive && (
+        <SearchHeader
+          query={query}
+          setQuery={setQuery}
+          setIsSearchActive={setIsSearchActive}
+        />
+      )}
 
-        <button
-          className={styles.cancelButton}
-          onClick={() => {
-            setQuery("");
-          }}
-        >
-          Cancel
-        </button>
-      </div>
+      {!isSearchActive && (
+        <InfoHeader
+          currency={currency}
+          setCurrency={setCurrency}
+          category={сategory}
+          setCategory={setCategory}
+          setIsSearchActive={setIsSearchActive}
+        />
+      )}
 
       <div>
-        {coins &&
+        {coins.length > 0 &&
           coins.map((coin) => (
             <div key={coin.id}>
               <Card
@@ -78,6 +79,3 @@ const CoinsList = () => {
 };
 
 export default CoinsList;
-
-/* eslint-disable no-debugger, no-console */
-//console.log();

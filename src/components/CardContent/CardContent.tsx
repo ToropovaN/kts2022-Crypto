@@ -1,3 +1,4 @@
+import { Option } from "@components/MultiDropdown/MultiDropdown";
 import { Currencies } from "@store/CoinsStore/types";
 import classNames from "classnames";
 
@@ -6,21 +7,22 @@ import styles from "./CardContent.module.scss";
 type CardContentProps = {
   price: number;
   priceChange: number;
-  currency: string;
+  currency: Option;
 };
 
-export const CardContent = (props: CardContentProps) => {
-  let rised: boolean = props.priceChange > 0;
+const CardContent = (props: CardContentProps) => {
+  const rised: boolean = props.priceChange > 0;
 
   return (
-    <div className={styles.priceBlock}>
-      <div className={styles.price}>
-        {Currencies.get(props.currency)} {props.price}
+    <div className={styles.cardContent__priceBlock}>
+      <div className={styles.cardContent__price}>
+        {props.currency.key}{" "}
+        {props.price}
       </div>
       <div
         className={classNames(
-          styles.priceChange,
-          rised ? styles.green : styles.red
+          styles.cardContent__priceChange,
+          rised ? styles.cardContent__green : styles.cardContent__red
         )}
       >
         {rised && "+"}
@@ -29,3 +31,4 @@ export const CardContent = (props: CardContentProps) => {
     </div>
   );
 };
+export default CardContent;

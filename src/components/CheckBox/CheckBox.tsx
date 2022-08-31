@@ -11,17 +11,13 @@ export type CheckBoxProps = Omit<
   onChange: (value: boolean) => void;
 };
 
-export const CheckBox: React.FC<CheckBoxProps> = ({
-  onChange,
-  disabled,
-  ...rest
-}) => {
+const CheckBox: React.FC<CheckBoxProps> = ({ onChange, disabled, ...rest }) => {
   return (
     <div className={classNames(styles.checkbox)}>
       <input
         type="checkbox"
         id="checkbox1"
-        className={classNames(styles.input)}
+        className={classNames(styles.checkbox__input)}
         {...rest}
         disabled={disabled}
         onChange={(e) => {
@@ -29,9 +25,11 @@ export const CheckBox: React.FC<CheckBoxProps> = ({
         }}
       ></input>
       <label htmlFor="checkbox1">
-        <div className={classNames(styles.square)}></div>
-        <div className={classNames(styles.sign)}>Чекбокс</div>
+        <div className={classNames(styles.checkbox__square)}></div>
+        <div className={classNames(styles.checkbox__sign)}>Чекбокс</div>
       </label>
     </div>
   );
 };
+
+export default CheckBox;

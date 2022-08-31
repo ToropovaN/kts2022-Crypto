@@ -1,42 +1,46 @@
-@import "../../../variables.module.scss";
+@import "@styles/variables.module.scss";
 
 .card {
+    box-sizing: border-box;
     padding: 16px;
     font-size: 12px;
     background: $White;
     border: none;
     outline: none;
-    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.075);
+    box-shadow: 0px 2px 4px $ShadowColor;
     border-radius: 8px;
     margin: 10px auto;
     display: flex;
     flex-direction: row;
     align-items: center;
     width: 100%;
+    overflow: hidden;
 
-
-}
-
-.image {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-}
-
-.titleBlock {
-    height: 100%;
-    margin-left: 16px;
-    text-align: left;
-}
-
-.title {
-    font-size: 16px;
-    margin-bottom: 4px;
-    color: $Black;
-    white-space: nowrap;
-}
-
-.subtitle {
-    font-size: 12px;
-    color: $DarkGreyColor;
+    &__image {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+    }
+    &__titleBlock {
+        height: 100%;
+        margin-left: 16px;
+        text-align: left;
+    }
+    &__title {
+        font-size: 16px;
+        margin-bottom: 4px;
+        color: $Black;
+        white-space: nowrap;
+        max-width: 170px;
+        text-overflow: ellipsis;
+        overflow: hidden; 
+    }
+    &__subtitle {
+        font-size: 12px;
+        color: $DarkGreyColor;
+        max-width: 170px;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden; 
+    }
 }
