@@ -1,0 +1,28 @@
+@import "@styles/variables.module.scss";
+
+.button {
+    font-size: 12px;
+    padding: 6px 10px;
+    color: $DarkGreyColor;
+    border-radius: 20px;
+    outline: none;
+    margin: 5px;
+}
+
+.disabled {
+    background-color: $DarkGreyColor;
+}
+
+.color {
+    &-primary {
+        color: $DarkGreyColor;
+        background-color: $BackgroundColor;
+        border: 0.5px solid $GreyColor;
+    }
+
+    &-secondary {
+        color: $BlueColor;
+        background-color: $BackgroundColor;
+        border: 0.5px solid $BlueColor;
+    }
+}

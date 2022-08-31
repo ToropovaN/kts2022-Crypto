@@ -1,0 +1,65 @@
+@import "@styles/variables.module.scss";
+
+.checkbox {
+    position: relative;
+    height: 25px;
+
+    &__input {
+
+        display: none;
+    
+        &:checked+label>.checkbox__square::after {
+            display: block;
+        }
+    
+        &:checked+label>.checkbox__square::before {
+            display: block;
+        }
+    
+    }
+
+    &__square {
+        position: absolute;
+        display: inline-block;
+        width: 25px;
+        height: 25px;
+        background: $White;
+        border: 1px solid $GreyColor;
+        border-radius: 4px;
+    
+        &::after {
+            content: '';
+            display: none;
+            position: absolute;
+            width: 14px;
+            height: 0px;
+            left: 8px;
+            top: 11px;
+            border: 1px solid $DarkGreyColor;
+            transform: matrix(0.71, -0.69, 0.73, 0.71, 0, 0);
+        }
+    
+        &::before {
+            content: '';
+            display: none;
+            position: absolute;
+            width: 9px;
+            height: 0px;
+            left: 2px;
+            top: 13px;
+            border: 1px solid $DarkGreyColor;
+            transform: matrix(-0.71, -0.69, 0.73, -0.71, 0, 0);
+        }
+    
+    }
+
+    &__sign {
+        position: absolute;
+        display: inline-block;
+        line-height: 27px;
+        margin-left: 35px;
+        font-size: 12px;
+        color: $DarkGreyColor;
+        font-family: Arial, Helvetica, sans-serif;
+    }
+}

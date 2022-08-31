@@ -1,0 +1,25 @@
+@import "@styles/variables.module.scss";
+
+.Chart{
+    &__priceBlock {
+        vertical-align: bottom;
+        margin: 15px 0;
+    }
+
+    &__ButtonsBlock {
+        display: flex;
+        justify-content: space-evenly;
+    }
+
+    &__mainPrice {
+        font-size: 24px;
+    }
+
+    &__green {
+        color: $GreenColor;
+    }
+
+    &__red {
+        color: $RedColor;
+    }
+}
