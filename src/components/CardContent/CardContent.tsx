@@ -1,5 +1,4 @@
 import { Option } from "@components/MultiDropdown/MultiDropdown";
-import { Currencies } from "@store/CoinsStore/types";
 import classNames from "classnames";
 
 import styles from "./CardContent.module.scss";
@@ -16,8 +15,7 @@ const CardContent = (props: CardContentProps) => {
   return (
     <div className={styles.cardContent__priceBlock}>
       <div className={styles.cardContent__price}>
-        {props.currency.key}{" "}
-        {props.price}
+        {props.currency.key} {props.price}
       </div>
       <div
         className={classNames(

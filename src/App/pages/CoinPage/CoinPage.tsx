@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import BackIcon from "@components/svg/BackIcon";
 import StarIcon from "@components/svg/StarIcon";
 import WithLoader from "@components/WithLoader/WithLoader";
-import CoinsStore from "@store/CoinsStore/CoinsStore";
 import { Coin, PageProps } from "@store/CoinsStore/types";
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -26,7 +25,7 @@ const CoinPage = ({ coinsStore }: PageProps) => {
         setIsLoading(false);
       });
     }
-  }, [id]);
+  }, [id, coinsStore]);
 
   return (
     <div className={styles.coinPage}>

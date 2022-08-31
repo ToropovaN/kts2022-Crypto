@@ -2,14 +2,17 @@ import React, { useEffect, useState } from "react";
 
 import Card from "@components/Card/Card";
 import CardContent from "@components/CardContent/CardContent";
-import { Categories, Coin, Currencies, PageProps } from "@store/CoinsStore/types";
+import { Option } from "@components/MultiDropdown/MultiDropdown";
+import {
+  Categories,
+  Coin,
+  Currencies,
+  PageProps,
+} from "@store/CoinsStore/types";
 import { useNavigate } from "react-router-dom";
 
-import styles from "./CoinsList.module.scss";
 import InfoHeader from "./components/InfoHeader/InfoHeader";
 import SearchHeader from "./components/SearchHeader/SearchHeader";
-import { Option } from "@components/MultiDropdown/MultiDropdown";
-import { CategoryScale } from "chart.js";
 
 const CoinsList = ({ coinsStore }: PageProps) => {
   const navigate = useNavigate();
@@ -24,15 +27,17 @@ const CoinsList = ({ coinsStore }: PageProps) => {
 
   useEffect(() => {
     if (query === "") {
-      coinsStore.getCoinsList({vs_currency: currency.value}).then((result) => {
-        setCoins(result);
-      });
+      coinsStore
+        .getCoinsList({ vs_currency: currency.value })
+        .then((result) => {
+          setCoins(result);
+        });
     } else {
-      coinsStore.getCoinsByQuery({query: query}).then((result) => {
+      coinsStore.getCoinsByQuery({ query: query }).then((result) => {
         setCoins(result);
       });
     }
-  }, [query, currency]);
+  }, [query, currency, coinsStore]);
 
   return (
     <>

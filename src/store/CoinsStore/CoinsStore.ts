@@ -8,13 +8,15 @@ export default class CoinsStore {
   async getCoinsList(newQueryParams: QueryParams): Promise<Coin[]> {
     let result = await this.apiStore.request({
       method: "get",
-        endpoint: "/coins/markets" + createQueryString({
-          vs_currency: newQueryParams.vs_currency || 'usd',
+      endpoint:
+        "/coins/markets" +
+        createQueryString({
+          vs_currency: newQueryParams.vs_currency || "usd",
           order: newQueryParams.order || "market_cap_desc",
           per_page: newQueryParams.per_page || 20,
-          page: newQueryParams.page ||1,
-          sparkline: newQueryParams.sparkline || false
-        })
+          page: newQueryParams.page || 1,
+          sparkline: newQueryParams.sparkline || false,
+        }),
     });
 
     return result.data.map((coin: Record<string, string>) => {
@@ -29,10 +31,10 @@ export default class CoinsStore {
     });
   }
 
-  async getCoinsByQuery(newQueryParams : QueryParams): Promise<Coin[]> {
+  async getCoinsByQuery(newQueryParams: QueryParams): Promise<Coin[]> {
     let result = await this.apiStore.request({
       method: "get",
-      endpoint: "/search" + createQueryString(newQueryParams)
+      endpoint: "/search" + createQueryString(newQueryParams),
     });
 
     return result.data.coins.map((coin: any) => {
@@ -68,11 +70,15 @@ export default class CoinsStore {
   async getChart(id: string, newQueryParams: QueryParams): Promise<ChartData> {
     let result = await this.apiStore.request({
       method: "get",
-      endpoint: "/coins/" + id + "/market_chart" + createQueryString({
-        vs_currency: newQueryParams.vs_currency || 'usd',
-        days: newQueryParams.days || 7,
-        interval: newQueryParams.interval || 'daily'
-      })
+      endpoint:
+        "/coins/" +
+        id +
+        "/market_chart" +
+        createQueryString({
+          vs_currency: newQueryParams.vs_currency || "usd",
+          days: newQueryParams.days || 7,
+          interval: newQueryParams.interval || "daily",
+        }),
     });
 
     let chartData: Array<{ x: number; y: number }> = result.data.prices.map(

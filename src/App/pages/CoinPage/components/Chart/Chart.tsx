@@ -48,7 +48,7 @@ const Chart = ({ coin }: ChartProps) => {
 
   useEffect(() => {
     const coinStore = new CoinsStore();
-    coinStore.getChart(coin.id, {days: days}).then((result) => {
+    coinStore.getChart(coin.id, { days: days }).then((result) => {
       setChartData(result);
     });
   }, [days, coin.id]);
@@ -65,7 +65,9 @@ const Chart = ({ coin }: ChartProps) => {
   return (
     <WithLoader loading={chartData === null}>
       <div className={styles.Chart__priceBlock}>
-        <span className={styles.Chart__mainPrice}>$ {chartData?.lastPrice}</span>
+        <span className={styles.Chart__mainPrice}>
+          $ {chartData?.lastPrice}
+        </span>
         <span
           className={classNames(
             styles.Chart__priceChange,
