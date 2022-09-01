@@ -1,3 +1,5 @@
+import { memo } from "react";
+
 import classNames from "classnames";
 
 import styles from "./CheckBox.module.scss";
@@ -32,4 +34,4 @@ const CheckBox: React.FC<CheckBoxProps> = ({ onChange, disabled, ...rest }) => {
   );
 };
 
-export default CheckBox;
+export default memo(CheckBox);

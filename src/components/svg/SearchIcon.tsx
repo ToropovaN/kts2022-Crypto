@@ -1,3 +1,5 @@
+import { memo } from "react";
+
 const SearchIcon = ({ isBig }: { isBig: boolean }) => {
   if (isBig)
     return (
@@ -31,4 +33,4 @@ const SearchIcon = ({ isBig }: { isBig: boolean }) => {
     );
 };
 
-export default SearchIcon;
+export default memo(SearchIcon);

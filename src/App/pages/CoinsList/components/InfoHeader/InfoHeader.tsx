@@ -1,6 +1,9 @@
+import { memo } from "react";
+
 import MultiDropdown, { Option } from "@components/MultiDropdown/MultiDropdown";
 import SearchIcon from "@components/svg/SearchIcon";
-import { Categories, Currencies } from "@store/CoinsStore/types";
+import { Currencies } from "@store/CoinsStore/types";
+import { Categories } from "@utils/categories";
 import classNames from "classnames";
 
 import styles from "./InfoHeader.module.scss";
@@ -87,4 +90,4 @@ const InfoHeader = ({
     </div>
   );
 };
-export default InfoHeader;
+export default memo(InfoHeader);

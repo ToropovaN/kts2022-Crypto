@@ -1,3 +1,5 @@
+import { memo } from "react";
+
 import classNames from "classnames";
 
 import styles from "./Loader.module.scss";
@@ -36,16 +38,28 @@ const Loader = ({
   let sizeClass = "size-" + size;
   if (loading)
     return (
-      <div className={classNames(styles.loader, styles[sizeClass], className)}>
+      <div
+        className={classNames(
+          styles.loader,
+          styles["loader-" + sizeClass],
+          className
+        )}
+      >
         <div
-          className={classNames(styles.loader__ellipse, styles[sizeClass])}
+          className={classNames(
+            styles.loader__ellipse,
+            styles["loader__ellipse-" + sizeClass]
+          )}
         />
         <div
-          className={classNames(styles.loader__polygon, styles[sizeClass])}
+          className={classNames(
+            styles.loader__polygon,
+            styles["loader__polygon-" + sizeClass]
+          )}
         />
       </div>
     );
   else return null;
 };
 
-export default Loader;
+export default memo(Loader);

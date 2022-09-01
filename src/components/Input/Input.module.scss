@@ -25,8 +25,9 @@
             color: $GreyColor;
         }
     }
+    &-disabled {
+        background-color: $BackgroundColor;
+    }
+    
 }
 
-.disabled {
-    background-color: $BackgroundColor;
-}

@@ -1,3 +1,5 @@
+import { memo } from "react";
+
 import Loader from "@components/Loader/Loader";
 import classNames from "classnames";
 
@@ -48,4 +50,4 @@ export const Button = ({
   );
 };
 
-export default Button;
+export default memo(Button);

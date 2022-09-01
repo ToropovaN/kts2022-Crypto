@@ -1,5 +1,3 @@
-import { useEffect, useState } from "react";
-
 import { Button, ButtonColor } from "@components/Button/Button";
 import Card from "@components/Card/Card";
 import WithLoader from "@components/WithLoader/WithLoader";
@@ -9,7 +7,8 @@ import {
   ChartDaysValues,
 } from "@config/ChartConfig";
 import CoinsStore from "@store/CoinsStore/CoinsStore";
-import { ChartData, Coin } from "@store/CoinsStore/types";
+import { CoinModel } from "@store/models/Coin/Coin";
+import { Meta } from "@utils/meta";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -22,6 +21,7 @@ import {
   Legend,
 } from "chart.js";
 import classNames from "classnames";
+import { observer } from "mobx-react-lite";
 import { Line } from "react-chartjs-2";
 
 import styles from "./Chart.module.scss";
@@ -38,63 +38,59 @@ ChartJS.register(
 );
 
 type ChartProps = {
-  coin: Coin;
+  coin: CoinModel;
+  coinsStore: CoinsStore;
 };
 
-const Chart = ({ coin }: ChartProps) => {
-  const [chartData, setChartData] = useState<ChartData | null>(null);
-
-  const [days, setDays] = useState<number>(ChartDaysValues[0]);
-
-  useEffect(() => {
-    const coinStore = new CoinsStore();
-    coinStore.getChart(coin.id, { days: days }).then((result) => {
-      setChartData(result);
-    });
-  }, [days, coin.id]);
-
-  const priceChange = chartData
-    ? chartData.lastPrice - chartData.firstPrice
+const Chart = ({ coin, coinsStore }: ChartProps) => {
+  const priceChange = coinsStore.chart
+    ? coinsStore.chart.lastPrice - coinsStore.chart.firstPrice
     : 0;
   const priceChangePercent =
-    chartData && chartData.firstPrice > 0
-      ? priceChange / chartData.firstPrice
+    coinsStore.chart && coinsStore.chart.firstPrice > 0
+      ? priceChange / coinsStore.chart.firstPrice
       : 0;
   const isRized = priceChange > 0;
 
   return (
-    <WithLoader loading={chartData === null}>
-      <div className={styles.Chart__priceBlock}>
-        <span className={styles.Chart__mainPrice}>
-          $ {chartData?.lastPrice}
-        </span>
-        <span
-          className={classNames(
-            styles.Chart__priceChange,
-            !isRized ? styles.Chart__red : styles.Chart__green
-          )}
-        >
-          {isRized && "+"}
-          {priceChange.toFixed(2)}
-          {isRized ? " (+" : " ("}
-          {priceChangePercent.toFixed(2)}
-          {"%)"}
-        </span>
-      </div>
+    <>
+      <WithLoader loading={coinsStore.meta !== Meta.success}>
+        <div className={styles.Chart__priceBlock}>
+          <span className={styles.Chart__mainPrice}>
+            {` ${coinsStore.currency.key} ${coinsStore.chart?.lastPrice} `}
+          </span>
+          <span
+            className={classNames(
+              styles.Chart__priceChange,
+              !isRized ? styles.Chart__red : styles.Chart__green
+            )}
+          >
+            {isRized && "+"}
+            {priceChange.toFixed(2)}
+            {isRized ? " (+" : " ("}
+            {priceChangePercent.toFixed(2)}
+            {"%)"}
+          </span>
+        </div>
 
-      <Line
-        options={chartOptions}
-        data={chartConfigData(chartData, coin.symbol)}
-      />
+        <Line
+          options={chartOptions}
+          data={chartConfigData(coinsStore.chart, coin.symbol)}
+        />
+      </WithLoader>
 
       <div className={styles.Chart__ButtonsBlock}>
         {ChartDaysValues.map((num) => {
           return (
             <Button
               key={num}
-              color={num === days ? ButtonColor.secondary : ButtonColor.primary}
+              color={
+                num === coinsStore.days
+                  ? ButtonColor.secondary
+                  : ButtonColor.primary
+              }
               onClick={() => {
-                setDays(num);
+                coinsStore.setDays(num);
               }}
             >
               {num} days
@@ -110,8 +106,8 @@ const Chart = ({ coin }: ChartProps) => {
         onClick={() => {}}
         content={<></>}
       />
-    </WithLoader>
+    </>
   );
 };
 
-export default Chart;
+export default observer(Chart);
