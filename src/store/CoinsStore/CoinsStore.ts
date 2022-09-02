@@ -43,6 +43,7 @@ type PrivateFields =
   | "_query"
   | "_category"
   | "_days"
+  | "_page"
   | "_isSearchActive";
 
 export default class CoinsStore {
@@ -57,6 +58,7 @@ export default class CoinsStore {
   private _query: string = "";
   private _category: string = Categories[0];
   private _days: number = ChartDaysValues[0];
+  private _page: number = 1;
   private _isSearchActive: boolean = false;
 
   constructor() {
@@ -69,7 +71,9 @@ export default class CoinsStore {
       _query: observable,
       _category: observable,
       _days: observable,
+      _page: observable,
       _isSearchActive: observable,
+
       list: computed,
       coin: computed,
       meta: computed,
@@ -78,7 +82,9 @@ export default class CoinsStore {
       category: computed,
       currency: computed,
       days: computed,
+      page: computed,
       isSearchActive: computed,
+
       getCoinDetails: action,
       getCoinsList: action,
       getCoinsByQuery: action,
@@ -88,10 +94,12 @@ export default class CoinsStore {
       setQuery: action,
       setDays: action,
       setIsSearchActive: action,
+      setPage: action,
     });
 
-    this.getCoinsList({ vs_currency: this.currency.value });
-    //this.setQuery(this._query);
+    if (this._list.order.length === 0) {
+      this.getCoinsList({ vs_currency: this.currency.value });
+    }
   }
 
   get list(): CoinModel[] {
@@ -133,6 +141,20 @@ export default class CoinsStore {
     }
   };
 
+  get page(): number {
+    return this._page;
+  }
+
+  public setPage = (newPage: number) => {
+    if (newPage !== this._page) {
+      this._page = newPage;
+      this.getCoinsList(
+        { vs_currency: this.currency.value, page: this._page },
+        true
+      );
+    }
+  };
+
   get query(): string {
     return this._query;
   }
@@ -140,7 +162,9 @@ export default class CoinsStore {
     this._query = newQuery;
     if (newQuery !== "") {
       this.getCoinsByQuery({ query: this._query });
-    } else this.getCoinsList({ vs_currency: this.currency.value });
+    } else {
+      this.getCoinsList({ vs_currency: this.currency.value });
+    }
   };
 
   get category(): string {
@@ -158,9 +182,12 @@ export default class CoinsStore {
     this._isSearchActive = newIsSearchActive;
   };
 
-  async getCoinsList(newQueryParams: QueryParams): Promise<void> {
+  async getCoinsList(
+    newQueryParams: QueryParams,
+    showMore?: boolean
+  ): Promise<void> {
     this._meta = Meta.loading;
-    this._list = getInitialCollectionModel();
+    if (!showMore) this._list = getInitialCollectionModel();
 
     let result = await this.apiStore.request({
       method: "get",
@@ -184,7 +211,21 @@ export default class CoinsStore {
           for (const coin of result.data as CoinListApi[]) {
             list.push(normalizeCoinList(coin));
           }
-          this._list = normalizeCollection(list, (listItem) => listItem.id);
+
+          const newCollection = normalizeCollection(
+            list,
+            (listItem) => listItem.id
+          );
+          if (showMore) {
+            const newOrder = this._list.order.concat(newCollection.order);
+            const newEntities = {};
+            Object.assign(
+              newEntities,
+              this._list.entities,
+              newCollection.entities
+            );
+            this._list = { order: newOrder, entities: newEntities };
+          } else this._list = newCollection;
         } catch (e) {
           this._meta = Meta.error;
         }
