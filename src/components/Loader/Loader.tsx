@@ -35,26 +35,25 @@ const Loader = ({
   size = LoaderSize.m,
   className,
 }: LoaderProps) => {
-  let sizeClass = "size-" + size;
   if (loading)
     return (
       <div
         className={classNames(
           styles.loader,
-          styles["loader-" + sizeClass],
+          styles[`loader-size-${size}`],
           className
         )}
       >
         <div
           className={classNames(
             styles.loader__ellipse,
-            styles["loader__ellipse-" + sizeClass]
+            styles[`loader__ellipse-size-${size}`]
           )}
         />
         <div
           className={classNames(
             styles.loader__polygon,
-            styles["loader__polygon-" + sizeClass]
+            styles[`loader__polygon-size-${size}`]
           )}
         />
       </div>

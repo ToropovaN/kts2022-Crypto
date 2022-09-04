@@ -6,6 +6,9 @@ export type ChartDataModel = {
   chart: Array<{ x: number; y: number }>;
   firstPrice: number;
   lastPrice: number;
+  priceChange: string;
+  priceChangePercent: string;
+  isRized: boolean;
 };
 
 export const getInitialChartModel = (): ChartDataModel => {
@@ -13,6 +16,9 @@ export const getInitialChartModel = (): ChartDataModel => {
     chart: [],
     firstPrice: 0,
     lastPrice: 0,
+    priceChange: "",
+    priceChangePercent: "",
+    isRized: false,
   };
 };
 
@@ -22,9 +28,20 @@ export const normalizeChartData = (from: ChartDataApi): ChartDataModel => {
       return { x: value[0], y: Number(value[1].toFixed(2)) };
     }
   );
+
+  const firstPrice = chartData[0].y;
+  const lastPrice = chartData[chartData.length - 1].y;
+  const priceChange = lastPrice - firstPrice;
+  const priceChangePercent = firstPrice > 0 ? priceChange / firstPrice : 0;
+  const isRized = priceChange > 0;
+
   return {
     chart: chartData,
-    firstPrice: chartData[0].y,
-    lastPrice: chartData[chartData.length - 1].y,
+    firstPrice: firstPrice,
+    lastPrice: lastPrice,
+    priceChange: (isRized ? "+" : "") + priceChange.toFixed(2) + " ",
+    priceChangePercent:
+      (isRized ? "(+" : "(") + priceChangePercent.toFixed(2) + "%)",
+    isRized: isRized,
   };
 };
