@@ -67,14 +67,12 @@ const CoinsList = ({ coinsStore }: PageProps) => {
                 subtitle={coin.symbol}
                 onClick={() => navigate(`/coin/${coin.id}`)}
                 content={
-                  !coinsStore.isSearchActive ? (
+                  !coinsStore.isSearchActive && (
                     <CardContent
                       price={coin.currentPrice}
                       priceChange={coin.priceChange}
                       currency={coinsStore.currency}
                     />
-                  ) : (
-                    <></>
                   )
                 }
               />

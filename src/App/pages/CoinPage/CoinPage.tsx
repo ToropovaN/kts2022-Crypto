@@ -4,6 +4,7 @@ import BackIcon from "@components/svg/BackIcon";
 import StarIcon from "@components/svg/StarIcon";
 import WithLoader from "@components/WithLoader/WithLoader";
 import { PageProps } from "@store/CoinsStore/types";
+import { Meta } from "@utils/meta";
 import { observer } from "mobx-react-lite";
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -22,7 +23,7 @@ const CoinPage = ({ coinsStore }: PageProps) => {
 
   return (
     <div className={styles.coinPage}>
-      <WithLoader loading={coinsStore.coin === null}>
+      <WithLoader loading={coinsStore.meta === Meta.loading}>
         <div className={styles.header}>
           <button className={styles.buttonBack} onClick={() => navigate(`/`)}>
             <BackIcon />

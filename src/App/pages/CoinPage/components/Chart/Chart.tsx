@@ -43,15 +43,6 @@ type ChartProps = {
 };
 
 const Chart = ({ coin, coinsStore }: ChartProps) => {
-  const priceChange = coinsStore.chart
-    ? coinsStore.chart.lastPrice - coinsStore.chart.firstPrice
-    : 0;
-  const priceChangePercent =
-    coinsStore.chart && coinsStore.chart.firstPrice > 0
-      ? priceChange / coinsStore.chart.firstPrice
-      : 0;
-  const isRized = priceChange > 0;
-
   return (
     <>
       <WithLoader loading={coinsStore.meta !== Meta.success}>
@@ -62,14 +53,13 @@ const Chart = ({ coin, coinsStore }: ChartProps) => {
           <span
             className={classNames(
               styles.Chart__priceChange,
-              !isRized ? styles.Chart__red : styles.Chart__green
+              !coinsStore.chart.isRized
+                ? styles.Chart__red
+                : styles.Chart__green
             )}
           >
-            {isRized && "+"}
-            {priceChange.toFixed(2)}
-            {isRized ? " (+" : " ("}
-            {priceChangePercent.toFixed(2)}
-            {"%)"}
+            {coinsStore.chart.priceChange}
+            {coinsStore.chart.priceChangePercent}
           </span>
         </div>
 
