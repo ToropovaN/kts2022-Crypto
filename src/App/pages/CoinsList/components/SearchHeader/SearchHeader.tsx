@@ -1,3 +1,5 @@
+import { memo } from "react";
+
 import Input from "@components/Input/Input";
 
 import styles from "./SearchHeader.module.scss";
@@ -35,4 +37,4 @@ const SearchHeader = ({
     </div>
   );
 };
-export default SearchHeader;
+export default memo(SearchHeader);

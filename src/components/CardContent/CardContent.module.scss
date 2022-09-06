@@ -1,23 +1,23 @@
 @import "@styles/variables.module.scss";
 
-.cardContent{
+.cardContent {
     &__priceBlock {
         width: 100%;
         text-align: right;
     }
-    
+
     &__price {
         font-size: 16px;
     }
-    
+
     &__priceChange {
         font-size: 10px;
     }
-    
+
     &__green {
         color: $GreenColor;
     }
-    
+
     &__red {
         color: $RedColor;
     }

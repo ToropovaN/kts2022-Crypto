@@ -1,86 +1,118 @@
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 
+import Button from "@components/Button/Button";
 import Card from "@components/Card/Card";
 import CardContent from "@components/CardContent/CardContent";
-import { Option } from "@components/MultiDropdown/MultiDropdown";
+import { LoaderSize } from "@components/Loader/Loader";
+import WithLoader from "@components/WithLoader/WithLoader";
+import { Meta } from "@config/MetaConfig";
+import { PageProps } from "@pages/types/types";
+import useQuery from "@utils/hooks/useQuery";
+import navigateToNewParameters from "@utils/navigate";
 import {
-  Categories,
-  Coin,
-  Currencies,
-  PageProps,
-} from "@store/CoinsStore/types";
+  QueryParameter,
+  setQueryParameter,
+  setStoreFromQuery,
+} from "@utils/query";
+import { observer } from "mobx-react-lite";
 import { useNavigate } from "react-router-dom";
 
+import styles from "./CoinsList.module.scss";
 import InfoHeader from "./components/InfoHeader/InfoHeader";
 import SearchHeader from "./components/SearchHeader/SearchHeader";
 
 const CoinsList = ({ coinsStore }: PageProps) => {
   const navigate = useNavigate();
 
-  const [coins, setCoins] = useState<Coin[]>([]);
+  const query = useQuery();
+  setStoreFromQuery(coinsStore, query);
 
-  const [currency, setCurrency] = useState<Option>(Currencies[0]);
-  const [query, setQuery] = useState<string>("");
-  const [сategory, setCategory] = useState<string>(Categories[0]);
+  const updateQuery = (newParameter: QueryParameter) => {
+    navigateToNewParameters(navigate, setQueryParameter(newParameter, query));
+  };
 
-  const [isSearchActive, setIsSearchActive] = useState<boolean>(false);
-
-  useEffect(() => {
-    if (query === "") {
-      coinsStore
-        .getCoinsList({ vs_currency: currency.value })
-        .then((result) => {
-          setCoins(result);
-        });
-    } else {
-      coinsStore.getCoinsByQuery({ query: query }).then((result) => {
-        setCoins(result);
-      });
-    }
-  }, [query, currency, coinsStore]);
+  const [isSearchActive, setIsSearchActive] = useState(
+    query["active_search"] || "false"
+  );
 
   return (
     <>
-      {isSearchActive && (
+      {isSearchActive === "true" ? (
         <SearchHeader
-          query={query}
-          setQuery={setQuery}
-          setIsSearchActive={setIsSearchActive}
+          query={coinsStore.query}
+          setQuery={(query) =>
+            updateQuery({ key: "query", value: String(query) })
+          }
+          setIsSearchActive={(isSearchActive) => {
+            updateQuery({
+              key: "active_search",
+              value: String(isSearchActive),
+            });
+            setIsSearchActive(String(isSearchActive));
+          }}
         />
-      )}
-
-      {!isSearchActive && (
+      ) : (
         <InfoHeader
-          currency={currency}
-          setCurrency={setCurrency}
-          category={сategory}
-          setCategory={setCategory}
-          setIsSearchActive={setIsSearchActive}
+          currency={coinsStore.currency}
+          setCurrency={(currency) =>
+            updateQuery({ key: "currency", value: currency.value })
+          }
+          category={coinsStore.category}
+          setCategory={(category) => {
+            updateQuery({ key: "category", value: category });
+          }}
+          setIsSearchActive={(isSearchActive) => {
+            updateQuery({
+              key: "active_search",
+              value: String(isSearchActive),
+            });
+            setIsSearchActive(String(isSearchActive));
+          }}
         />
       )}
 
       <div>
-        {coins.length > 0 &&
-          coins.map((coin) => (
-            <div key={coin.id}>
-              <Card
-                image={coin.img}
-                title={coin.name}
-                subtitle={coin.symbol}
-                onClick={() => navigate(`/coin/${coin.id}`)}
-                content={
+        {coinsStore.list.map((coin) => (
+          <div key={coin.id}>
+            <Card
+              image={coin.img}
+              title={coin.name}
+              subtitle={coin.symbol}
+              onClick={() => navigate(`/coin/${coin.id}`)}
+              content={
+                isSearchActive === "false" && (
                   <CardContent
                     price={coin.currentPrice}
                     priceChange={coin.priceChange}
-                    currency={currency}
+                    currency={coinsStore.currency}
                   />
-                }
-              />
-            </div>
-          ))}
+                )
+              }
+            />
+          </div>
+        ))}
       </div>
+      {isSearchActive === "false" && (
+        <WithLoader
+          loading={coinsStore.meta === Meta.loading}
+          size={LoaderSize.s}
+        >
+          <div className={styles.CoinsList__row}>
+            <Button
+              onClick={() => {
+                updateQuery({
+                  key: "page",
+                  value: String(coinsStore.page + 1),
+                });
+              }}
+            >
+              Show more
+            </Button>
+          </div>
+        </WithLoader>
+      )}
     </>
   );
 };
 
-export default CoinsList;
+export default observer(CoinsList);

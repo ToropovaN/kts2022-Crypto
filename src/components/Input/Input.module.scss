@@ -1,4 +1,5 @@
 @import "@styles/variables.module.scss";
+
 .input {
     color: $GreyColor;
     background: $White;
@@ -25,8 +26,9 @@
             color: $GreyColor;
         }
     }
-}
 
-.disabled {
-    background-color: $BackgroundColor;
+    &-disabled {
+        background-color: $BackgroundColor;
+    }
+
 }

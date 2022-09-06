@@ -7,15 +7,15 @@
     &__input {
 
         display: none;
-    
+
         &:checked+label>.checkbox__square::after {
             display: block;
         }
-    
+
         &:checked+label>.checkbox__square::before {
             display: block;
         }
-    
+
     }
 
     &__square {
@@ -26,7 +26,7 @@
         background: $White;
         border: 1px solid $GreyColor;
         border-radius: 4px;
-    
+
         &::after {
             content: '';
             display: none;
@@ -38,7 +38,7 @@
             border: 1px solid $DarkGreyColor;
             transform: matrix(0.71, -0.69, 0.73, 0.71, 0, 0);
         }
-    
+
         &::before {
             content: '';
             display: none;
@@ -50,7 +50,7 @@
             border: 1px solid $DarkGreyColor;
             transform: matrix(-0.71, -0.69, 0.73, -0.71, 0, 0);
         }
-    
+
     }
 
     &__sign {

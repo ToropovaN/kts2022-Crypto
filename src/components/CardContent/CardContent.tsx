@@ -1,3 +1,5 @@
+import { memo } from "react";
+
 import { Option } from "@components/MultiDropdown/MultiDropdown";
 import classNames from "classnames";
 
@@ -29,4 +31,4 @@ const CardContent = (props: CardContentProps) => {
     </div>
   );
 };
-export default CardContent;
+export default memo(CardContent);

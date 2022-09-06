@@ -1,4 +1,4 @@
-import { ChartData } from "@store/CoinsStore/types";
+import ChartDataModel from "@store/models/Chart/Chart";
 import moment from "moment";
 
 export const chartOptions = {
@@ -14,14 +14,14 @@ export const chartOptions = {
 };
 
 export const chartConfigData = (
-  chartData: ChartData | null,
+  chartData: ChartDataModel | null,
   coinSymbol: string
 ) => {
   return {
     labels: chartData?.chart
       ? chartData.chart.map((value: { x: number; y: number }) =>
-          moment(value.x).format("MMMDD")
-        )
+        moment(value.x).format("MMMDD")
+      )
       : [],
     datasets: [
       {

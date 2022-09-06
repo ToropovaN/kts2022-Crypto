@@ -27,7 +27,7 @@ const Input = ({ value, onChange, className, ...rest }: InputProps) => {
         className={classNames(
           styles.input__field,
           styles.className,
-          rest.disabled ? styles.disabled : ""
+          rest.disabled && styles["input-disabled"]
         )}
         type="text"
         {...rest}
