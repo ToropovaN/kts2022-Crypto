@@ -14,10 +14,12 @@
         &-size-s {
             border: 3px solid $DarkGreyColor;
         }
-                &-size-m {
+
+        &-size-m {
             border: 4.5px solid $DarkGreyColor;
         }
-                &-size-l {
+
+        &-size-l {
             border: 6px solid $DarkGreyColor;
         }
     }
@@ -35,27 +37,31 @@
             border-right: 16px solid $White;
             border-left: 16px solid transparent;
         }
-                &-size-m {
+
+        &-size-m {
             border: 20px solid transparent;
             border-right: 26px solid $White;
             border-left: 26px solid transparent;
         }
-                &-size-l {
+
+        &-size-l {
             border: 30px solid transparent;
             border-right: 36px solid $White;
             border-left: 36px solid transparent;
         }
     }
 
-        &-size-s {
+    &-size-s {
         width: 20px;
         height: 20px;
     }
-        &-size-m {
+
+    &-size-m {
         width: 40px;
         height: 40px;
     }
-        &-size-l {
+
+    &-size-l {
         width: 60px;
         height: 60px;
     }

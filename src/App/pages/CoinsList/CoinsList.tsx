@@ -1,17 +1,19 @@
+import { useState } from "react";
+
 import Button from "@components/Button/Button";
 import Card from "@components/Card/Card";
 import CardContent from "@components/CardContent/CardContent";
 import { LoaderSize } from "@components/Loader/Loader";
 import WithLoader from "@components/WithLoader/WithLoader";
-import { PageProps } from "@store/CoinsStore/types";
-import { Meta } from "@utils/meta";
+import { Meta } from "@config/MetaConfig";
+import { PageProps } from "@pages/types/types";
+import useQuery from "@utils/hooks/useQuery";
+import navigateToNewParameters from "@utils/navigate";
 import {
-  navigateToNewParameters,
   QueryParameter,
   setQueryParameter,
   setStoreFromQuery,
-  useQuery,
-} from "@utils/useQuery";
+} from "@utils/query";
 import { observer } from "mobx-react-lite";
 import { useNavigate } from "react-router-dom";
 
@@ -29,17 +31,25 @@ const CoinsList = ({ coinsStore }: PageProps) => {
     navigateToNewParameters(navigate, setQueryParameter(newParameter, query));
   };
 
+  const [isSearchActive, setIsSearchActive] = useState(
+    query["active_search"] || "false"
+  );
+
   return (
     <>
-      {coinsStore.isSearchActive ? (
+      {isSearchActive === "true" ? (
         <SearchHeader
           query={coinsStore.query}
           setQuery={(query) =>
             updateQuery({ key: "query", value: String(query) })
           }
-          setIsSearchActive={(isSearchActive) =>
-            updateQuery({ key: "active_search", value: String(isSearchActive) })
-          }
+          setIsSearchActive={(isSearchActive) => {
+            updateQuery({
+              key: "active_search",
+              value: String(isSearchActive),
+            });
+            setIsSearchActive(String(isSearchActive));
+          }}
         />
       ) : (
         <InfoHeader
@@ -51,35 +61,38 @@ const CoinsList = ({ coinsStore }: PageProps) => {
           setCategory={(category) => {
             updateQuery({ key: "category", value: category });
           }}
-          setIsSearchActive={(isSearchActive) =>
-            updateQuery({ key: "active_search", value: String(isSearchActive) })
-          }
+          setIsSearchActive={(isSearchActive) => {
+            updateQuery({
+              key: "active_search",
+              value: String(isSearchActive),
+            });
+            setIsSearchActive(String(isSearchActive));
+          }}
         />
       )}
 
       <div>
-        {coinsStore.list.length > 0 &&
-          coinsStore.list.map((coin) => (
-            <div key={coin.id}>
-              <Card
-                image={coin.img}
-                title={coin.name}
-                subtitle={coin.symbol}
-                onClick={() => navigate(`/coin/${coin.id}`)}
-                content={
-                  !coinsStore.isSearchActive && (
-                    <CardContent
-                      price={coin.currentPrice}
-                      priceChange={coin.priceChange}
-                      currency={coinsStore.currency}
-                    />
-                  )
-                }
-              />
-            </div>
-          ))}
+        {coinsStore.list.map((coin) => (
+          <div key={coin.id}>
+            <Card
+              image={coin.img}
+              title={coin.name}
+              subtitle={coin.symbol}
+              onClick={() => navigate(`/coin/${coin.id}`)}
+              content={
+                isSearchActive === "false" && (
+                  <CardContent
+                    price={coin.currentPrice}
+                    priceChange={coin.priceChange}
+                    currency={coinsStore.currency}
+                  />
+                )
+              }
+            />
+          </div>
+        ))}
       </div>
-      {!coinsStore.isSearchActive && (
+      {isSearchActive === "false" && (
         <WithLoader
           loading={coinsStore.meta === Meta.loading}
           size={LoaderSize.s}

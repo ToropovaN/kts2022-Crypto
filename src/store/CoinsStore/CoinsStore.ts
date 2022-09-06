@@ -1,9 +1,12 @@
 import { Option } from "@components/MultiDropdown/MultiDropdown";
+import Categories from "@config/CategoriesConfig";
 import { ChartDaysValues } from "@config/ChartConfig";
+import Currencies from "@config/CurrenciesConfig";
+import { Meta } from "@config/MetaConfig";
 import ApiStore from "@store/ApiStore/ApiStore";
-import {
+import { ApiResponse } from "@store/ApiStore/types";
+import ChartDataModel, {
   ChartDataApi,
-  ChartDataModel,
   getInitialChartModel,
   normalizeChartData,
 } from "@store/models/Chart/Chart";
@@ -22,8 +25,6 @@ import {
   linearizeCollection,
   normalizeCollection,
 } from "@store/models/shared/Collection";
-import { Categories } from "@utils/categories";
-import { Meta } from "@utils/meta";
 import {
   action,
   computed,
@@ -32,7 +33,7 @@ import {
   runInAction,
 } from "mobx";
 
-import { createQueryString, Currencies, QueryParams } from "./types";
+import { createQueryString, QueryParams } from "./types";
 
 type PrivateFields =
   | "_meta"
@@ -43,8 +44,7 @@ type PrivateFields =
   | "_query"
   | "_category"
   | "_days"
-  | "_page"
-  | "_isSearchActive";
+  | "_page";
 
 export default class CoinsStore {
   private readonly apiStore = new ApiStore("https://api.coingecko.com/api/v3");
@@ -59,7 +59,6 @@ export default class CoinsStore {
   private _category: string = Categories[0];
   private _days: number = ChartDaysValues[0];
   private _page: number = 1;
-  private _isSearchActive: boolean = false;
 
   constructor() {
     makeObservable<CoinsStore, PrivateFields>(this, {
@@ -72,7 +71,6 @@ export default class CoinsStore {
       _category: observable,
       _days: observable,
       _page: observable,
-      _isSearchActive: observable,
 
       list: computed,
       coin: computed,
@@ -83,7 +81,6 @@ export default class CoinsStore {
       currency: computed,
       days: computed,
       page: computed,
-      isSearchActive: computed,
 
       getCoinDetails: action,
       getCoinsList: action,
@@ -93,7 +90,6 @@ export default class CoinsStore {
       setCurrency: action,
       setQuery: action,
       setDays: action,
-      setIsSearchActive: action,
       setPage: action,
     });
 
@@ -174,14 +170,6 @@ export default class CoinsStore {
     this._category = newCategory;
   };
 
-  get isSearchActive(): boolean {
-    return this._isSearchActive;
-  }
-
-  public setIsSearchActive = (newIsSearchActive: boolean) => {
-    this._isSearchActive = newIsSearchActive;
-  };
-
   async getCoinsList(
     newQueryParams: QueryParams,
     showMore?: boolean
@@ -189,7 +177,7 @@ export default class CoinsStore {
     this._meta = Meta.loading;
     if (!showMore) this._list = getInitialCollectionModel();
 
-    let result = await this.apiStore.request({
+    let result: ApiResponse<CoinListApi[], null> = await this.apiStore.request({
       method: "get",
       endpoint:
         "/coins/markets" +
@@ -203,14 +191,10 @@ export default class CoinsStore {
     });
 
     runInAction(() => {
-      const list: CoinModel[] = [];
-
       if (result.success) {
         try {
           this._meta = Meta.success;
-          for (const coin of result.data as CoinListApi[]) {
-            list.push(normalizeCoinList(coin));
-          }
+          const list = result.data.map(normalizeCoinList);
 
           const newCollection = normalizeCollection(
             list,
@@ -218,12 +202,10 @@ export default class CoinsStore {
           );
           if (showMore) {
             const newOrder = this._list.order.concat(newCollection.order);
-            const newEntities = {};
-            Object.assign(
-              newEntities,
-              this._list.entities,
-              newCollection.entities
-            );
+            const newEntities = {
+              ...this._list.entities,
+              ...newCollection.entities,
+            };
             this._list = { order: newOrder, entities: newEntities };
           } else this._list = newCollection;
         } catch (e) {
@@ -240,23 +222,21 @@ export default class CoinsStore {
     this._meta = Meta.loading;
     this._list = getInitialCollectionModel();
 
-    let result = await this.apiStore.request({
-      method: "get",
-      endpoint: "/search" + createQueryString(newQueryParams),
-    });
+    let result: ApiResponse<{ coins: CoinQueryApi[] }, null> =
+      await this.apiStore.request({
+        method: "get",
+        endpoint: "/search" + createQueryString(newQueryParams),
+      });
 
     runInAction(() => {
-      const list: CoinModel[] = [];
-
       if (result.success) {
         try {
           this._meta = Meta.success;
-          for (const coin of (result.data as { coins: Array<CoinQueryApi> })
-            .coins) {
-            list.push(normalizeCoinQuery(coin));
-          }
+          const list = result.data.coins.map(normalizeCoinQuery);
           this._list = normalizeCollection(list, (listItem) => listItem.id);
         } catch (e) {
+          /* eslint-disable no-debugger, no-console */
+          console.log(e);
           this._meta = Meta.error;
         }
       } else {
@@ -270,16 +250,18 @@ export default class CoinsStore {
     this._meta = Meta.loading;
     this._coin = null;
 
-    let result = await this.apiStore.request({
-      method: "get",
-      endpoint: "/coins/" + id,
-    });
+    let result: ApiResponse<CoinDetailsApi, null> = await this.apiStore.request(
+      {
+        method: "get",
+        endpoint: "/coins/" + id,
+      }
+    );
 
     runInAction(() => {
       if (result.success) {
         try {
           this._meta = Meta.success;
-          this._coin = normalizeCoinDetails(result.data as CoinDetailsApi);
+          this._coin = normalizeCoinDetails(result.data);
 
           this._days = ChartDaysValues[0];
           this.getChart(this._coin.id, {

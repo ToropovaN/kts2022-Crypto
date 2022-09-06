@@ -6,9 +6,9 @@ import {
   chartConfigData,
   ChartDaysValues,
 } from "@config/ChartConfig";
+import { Meta } from "@config/MetaConfig";
 import CoinsStore from "@store/CoinsStore/CoinsStore";
 import { CoinModel } from "@store/models/Coin/Coin";
-import { Meta } from "@utils/meta";
 import {
   Chart as ChartJS,
   CategoryScale,

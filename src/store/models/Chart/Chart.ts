@@ -2,7 +2,7 @@ export type ChartDataApi = {
   prices: Array<[number, number]>;
 };
 
-export type ChartDataModel = {
+type ChartDataModel = {
   chart: Array<{ x: number; y: number }>;
   firstPrice: number;
   lastPrice: number;
@@ -45,3 +45,5 @@ export const normalizeChartData = (from: ChartDataApi): ChartDataModel => {
     isRized: isRized,
   };
 };
+
+export default ChartDataModel;

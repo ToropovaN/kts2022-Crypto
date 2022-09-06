@@ -1,19 +1,3 @@
-import { Option } from "@components/MultiDropdown/MultiDropdown";
-
-import CoinsStore from "./CoinsStore";
-
-export type PageProps = {
-  coinsStore: CoinsStore;
-};
-
-export const Currencies: Option[] = [
-  { value: "usd", key: "$" },
-  { value: "inr", key: "₹" },
-  { value: "rub", key: "₽" },
-  { value: "eur", key: "€" },
-  { value: "try", key: "₺" },
-];
-
 export type QueryParams = {
   vs_currency?: string;
   order?:

@@ -3,8 +3,8 @@ import { useEffect } from "react";
 import BackIcon from "@components/svg/BackIcon";
 import StarIcon from "@components/svg/StarIcon";
 import WithLoader from "@components/WithLoader/WithLoader";
-import { PageProps } from "@store/CoinsStore/types";
-import { Meta } from "@utils/meta";
+import { Meta } from "@config/MetaConfig";
+import { PageProps } from "@pages/types/types";
 import { observer } from "mobx-react-lite";
 import { useNavigate, useParams } from "react-router-dom";
 
