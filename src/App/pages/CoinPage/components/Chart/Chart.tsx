@@ -1,14 +1,14 @@
-import { Button, ButtonColor } from "@components/Button/Button";
-import Card from "@components/Card/Card";
-import WithLoader from "@components/WithLoader/WithLoader";
+import { Button, ButtonColor } from "components/Button/Button";
+import Card from "components/Card/Card";
+import WithLoader from "components/WithLoader/WithLoader";
 import {
   chartOptions,
   chartConfigData,
   ChartDaysValues,
-} from "@config/ChartConfig";
-import { Meta } from "@config/MetaConfig";
-import CoinsStore from "@store/CoinsStore/CoinsStore";
-import { CoinModel } from "@store/models/Coin/Coin";
+} from "config/ChartConfig";
+import { Meta } from "config/MetaConfig";
+import CoinsStore from "store/CoinsStore/CoinsStore";
+import { CoinModel } from "store/models/Coin/Coin";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -25,6 +25,7 @@ import { observer } from "mobx-react-lite";
 import { Line } from "react-chartjs-2";
 
 import styles from "./Chart.module.scss";
+import { getInitialChartModel } from "store/models/Chart/Chart";
 
 ChartJS.register(
   CategoryScale,
@@ -45,32 +46,33 @@ type ChartProps = {
 const Chart = ({ coin, coinsStore }: ChartProps) => {
   return (
     <>
-      <WithLoader loading={coinsStore.meta !== Meta.success}>
-        <div className={styles.Chart__priceBlock}>
-          <span className={styles.Chart__mainPrice}>
-            {` ${coinsStore.currency.key} ${coinsStore.chart?.lastPrice} `}
-          </span>
-          <span
-            className={classNames(
-              styles.Chart__priceChange,
-              !coinsStore.chart.isRized
-                ? styles.Chart__red
-                : styles.Chart__green
-            )}
-          >
-            {coinsStore.chart.priceChange}
-            {coinsStore.chart.priceChangePercent}
-          </span>
-        </div>
+      <div className={styles.Chart__mainBlock}>
+        <WithLoader loading={coinsStore.chart.chart === null}>
+          <div className={styles.Chart__priceBlock}>
+            <span className={styles.Chart__mainPrice}>
+              {` ${coinsStore.currency.key} ${coinsStore.chart?.lastPrice} `}
+            </span>
+            <span
+              className={classNames(
+                styles.Chart__priceChange,
+                !coinsStore.chart.isRized
+                  ? styles.Chart__red
+                  : styles.Chart__green
+              )}
+            >
+              {coinsStore.chart.priceChange}
+              {coinsStore.chart.priceChangePercent}
+            </span>
+          </div>
 
-        <Line
-          options={chartOptions}
-          data={chartConfigData(coinsStore.chart, coin.symbol)}
-        />
-      </WithLoader>
-
+          <Line
+            options={chartOptions}
+            data={chartConfigData(coinsStore.chart, coin.symbol)}
+          />
+        </WithLoader>
+      </div>
       <div className={styles.Chart__ButtonsBlock}>
-        {ChartDaysValues.map((num) => {
+        {ChartDaysValues.map((num: number) => {
           return (
             <Button
               key={num}
@@ -93,7 +95,7 @@ const Chart = ({ coin, coinsStore }: ChartProps) => {
         image={coin.img}
         title={coin.name}
         subtitle={coin.symbol}
-        onClick={() => {}}
+        onClick={() => { }}
         content={<></>}
       />
     </>

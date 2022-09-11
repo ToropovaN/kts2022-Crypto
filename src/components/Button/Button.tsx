@@ -1,6 +1,6 @@
 import { memo } from "react";
 
-import Loader from "@components/Loader/Loader";
+import Loader from "components/Loader/Loader";
 import classNames from "classnames";
 
 import styles from "./Button.module.scss";

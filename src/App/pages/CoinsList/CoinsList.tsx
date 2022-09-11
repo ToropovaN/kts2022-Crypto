@@ -1,25 +1,26 @@
 import { useState } from "react";
 
-import Button from "@components/Button/Button";
-import Card from "@components/Card/Card";
-import CardContent from "@components/CardContent/CardContent";
-import { LoaderSize } from "@components/Loader/Loader";
-import WithLoader from "@components/WithLoader/WithLoader";
-import { Meta } from "@config/MetaConfig";
-import { PageProps } from "@pages/types/types";
-import useQuery from "@utils/hooks/useQuery";
-import navigateToNewParameters from "@utils/navigate";
+import Button from "components/Button/Button";
+import Card from "components/Card/Card";
+import CardContent from "components/CardContent/CardContent";
+import { LoaderSize } from "components/Loader/Loader";
+import WithLoader from "components/WithLoader/WithLoader";
+import { Meta } from "config/MetaConfig";
+import { PageProps } from "../types/types";
+import useQuery from "utils/hooks/useQuery";
+import navigateToNewParameters from "utils/navigate";
 import {
   QueryParameter,
   setQueryParameter,
   setStoreFromQuery,
-} from "@utils/query";
+} from "utils/query";
 import { observer } from "mobx-react-lite";
 import { useNavigate } from "react-router-dom";
 
 import styles from "./CoinsList.module.scss";
 import InfoHeader from "./components/InfoHeader/InfoHeader";
 import SearchHeader from "./components/SearchHeader/SearchHeader";
+import { CoinModel } from "store/models/Coin/Coin";
 
 const CoinsList = ({ coinsStore }: PageProps) => {
   const navigate = useNavigate();
@@ -72,7 +73,7 @@ const CoinsList = ({ coinsStore }: PageProps) => {
       )}
 
       <div>
-        {coinsStore.list.map((coin) => (
+        {coinsStore.list.map((coin: CoinModel) => (
           <div key={coin.id}>
             <Card
               image={coin.img}

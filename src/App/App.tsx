@@ -1,8 +1,8 @@
 import React from "react";
 
-import CoinPage from "@pages/CoinPage";
-import CoinsList from "@pages/CoinsList";
-import CoinsStore from "@store/CoinsStore/CoinsStore";
+import CoinPage from "./pages/CoinPage";
+import CoinsList from "./pages/CoinsList";
+import CoinsStore from "store/CoinsStore/CoinsStore";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import "./App.module.scss";
 

@@ -3,7 +3,7 @@ export type ChartDataApi = {
 };
 
 type ChartDataModel = {
-  chart: Array<{ x: number; y: number }>;
+  chart: Array<{ x: number; y: number }> | null;
   firstPrice: number;
   lastPrice: number;
   priceChange: string;
@@ -13,7 +13,7 @@ type ChartDataModel = {
 
 export const getInitialChartModel = (): ChartDataModel => {
   return {
-    chart: [],
+    chart: null,
     firstPrice: 0,
     lastPrice: 0,
     priceChange: "",

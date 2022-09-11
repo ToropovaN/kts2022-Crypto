@@ -1,5 +1,5 @@
-import Currencies from "@config/CurrenciesConfig";
-import CoinsStore from "@store/CoinsStore/CoinsStore";
+import Currencies from "config/CurrenciesConfig";
+import CoinsStore from "store/CoinsStore/CoinsStore";
 
 export type QueryParameter = { key: string; value: string };
 
@@ -21,7 +21,7 @@ export const setStoreFromQuery = (
   if (query["currency"] && query["currency"] !== store.currency.value) {
     store.setCurrency(
       Currencies.find((option) => option.value === query["currency"]) ||
-        Currencies[0]
+      Currencies[0]
     );
   }
   if (

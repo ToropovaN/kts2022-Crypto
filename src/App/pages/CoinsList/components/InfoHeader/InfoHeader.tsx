@@ -1,9 +1,9 @@
 import { memo } from "react";
 
-import MultiDropdown, { Option } from "@components/MultiDropdown/MultiDropdown";
-import SearchIcon from "@components/svg/SearchIcon";
-import Categories from "@config/CategoriesConfig";
-import Currencies from "@config/CurrenciesConfig";
+import MultiDropdown, { Option } from "components/MultiDropdown/MultiDropdown";
+import SearchIcon from "components/svg/SearchIcon";
+import Categories from "config/CategoriesConfig";
+import Currencies from "config/CurrenciesConfig";
 import classNames from "classnames";
 
 import styles from "./InfoHeader.module.scss";

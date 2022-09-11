@@ -1,4 +1,4 @@
-import { Option } from "@components/MultiDropdown/MultiDropdown";
+import { Option } from "components/MultiDropdown/MultiDropdown";
 
 const Currencies: Option[] = [
   { value: "usd", key: "$" },

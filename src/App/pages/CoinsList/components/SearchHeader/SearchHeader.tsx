@@ -1,6 +1,6 @@
 import { memo } from "react";
 
-import Input from "@components/Input/Input";
+import Input from "components/Input/Input";
 
 import styles from "./SearchHeader.module.scss";
 

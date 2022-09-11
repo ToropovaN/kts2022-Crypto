@@ -1,6 +1,6 @@
 import { memo } from "react";
 
-import Loader, { LoaderSize } from "@components/Loader/Loader";
+import Loader, { LoaderSize } from "components/Loader/Loader";
 
 export type WithLoaderProps = React.PropsWithChildren<{
   loading: boolean;

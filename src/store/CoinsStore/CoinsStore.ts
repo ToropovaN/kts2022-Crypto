@@ -1,15 +1,15 @@
-import { Option } from "@components/MultiDropdown/MultiDropdown";
-import Categories from "@config/CategoriesConfig";
-import { ChartDaysValues } from "@config/ChartConfig";
-import Currencies from "@config/CurrenciesConfig";
-import { Meta } from "@config/MetaConfig";
-import ApiStore from "@store/ApiStore/ApiStore";
-import { ApiResponse } from "@store/ApiStore/types";
+import { Option } from "components/MultiDropdown/MultiDropdown";
+import Categories from "config/CategoriesConfig";
+import { ChartDaysValues } from "config/ChartConfig";
+import Currencies from "config/CurrenciesConfig";
+import { Meta } from "config/MetaConfig";
+import ApiStore from "store/ApiStore/ApiStore";
+import { ApiResponse } from "store/ApiStore/types";
 import ChartDataModel, {
   ChartDataApi,
   getInitialChartModel,
   normalizeChartData,
-} from "@store/models/Chart/Chart";
+} from "store/models/Chart/Chart";
 import {
   CoinDetailsApi,
   CoinListApi,
@@ -18,13 +18,13 @@ import {
   normalizeCoinDetails,
   normalizeCoinList,
   normalizeCoinQuery,
-} from "@store/models/Coin/Coin";
+} from "store/models/Coin/Coin";
 import {
   CollectionModel,
   getInitialCollectionModel,
   linearizeCollection,
   normalizeCollection,
-} from "@store/models/shared/Collection";
+} from "store/models/shared/Collection";
 import {
   action,
   computed,

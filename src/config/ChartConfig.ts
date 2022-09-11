@@ -1,4 +1,4 @@
-import ChartDataModel from "@store/models/Chart/Chart";
+import ChartDataModel from "store/models/Chart/Chart";
 import moment from "moment";
 
 export const chartOptions = {
@@ -28,7 +28,7 @@ export const chartConfigData = (
         label: coinSymbol,
         fill: false,
         data: chartData
-          ? chartData.chart.map((value: { x: number; y: number }) => value.y)
+          ? chartData.chart?.map((value: { x: number; y: number }) => value.y)
           : [],
         borderColor: "#0063F5",
       },
