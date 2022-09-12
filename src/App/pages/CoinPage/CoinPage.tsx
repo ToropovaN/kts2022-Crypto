@@ -1,13 +1,12 @@
 import { useEffect } from "react";
 
-import BackIcon from "@components/svg/BackIcon";
-import StarIcon from "@components/svg/StarIcon";
-import WithLoader from "@components/WithLoader/WithLoader";
-import { Meta } from "@config/MetaConfig";
-import { PageProps } from "@pages/types/types";
+import BackIcon from "components/svg/BackIcon";
+import StarIcon from "components/svg/StarIcon";
+import WithLoader from "components/WithLoader/WithLoader";
 import { observer } from "mobx-react-lite";
 import { useNavigate, useParams } from "react-router-dom";
 
+import PageProps from "../types/types";
 import styles from "./CoinPage.module.scss";
 import Chart from "./components/Chart/Chart";
 
@@ -23,9 +22,9 @@ const CoinPage = ({ coinsStore }: PageProps) => {
 
   return (
     <div className={styles.coinPage}>
-      <WithLoader loading={coinsStore.meta === Meta.loading}>
+      <WithLoader loaderProps={{ loading: coinsStore.coin === null }}>
         <div className={styles.header}>
-          <button className={styles.buttonBack} onClick={() => navigate(`/`)}>
+          <button className={styles.buttonBack} onClick={() => navigate(-1)}>
             <BackIcon />
           </button>
           <img

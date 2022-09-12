@@ -1,13 +1,16 @@
-@import "@styles/variables.module.scss";
+@import "styles/variables.module.scss";
 
 input[type='checkbox'] {
     display: none;
 }
 
+$width: 160px;
+
 .MultiDropdown {
-    width: 160px;
+    width: $width;
     font-size: 12px;
     color: $DarkGreyColor;
+    position: relative;
 
     &__checkbox {
         display: none;
@@ -41,20 +44,33 @@ input[type='checkbox'] {
     }
 
     &__option {
+        position: relative;
         display: block;
         padding: 6px 10px;
         background-color: $BackgroundColor;
         border: 0.5px solid $GreyColor;
         margin-top: -1px;
+        transition: color 500ms ease;
 
         &-chacked {
             color: $BlueColor;
             text-decoration: underline;
         }
+        &:hover{
+            color: $BlueColor;
+        }
     }
 
     &__optionBlock:last-child>.MultiDropdown__option {
         border-radius: 0 0 12px 12px;
-        ;
+    }
+
+    &__optionBlock {
+        position: absolute;
+        width: $width;
+    }
+
+    &__list {
+        position: relative;
     }
 }

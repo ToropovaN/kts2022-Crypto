@@ -1,30 +1,8 @@
-import { Option } from "@components/MultiDropdown/MultiDropdown";
-import Categories from "@config/CategoriesConfig";
-import { ChartDaysValues } from "@config/ChartConfig";
-import Currencies from "@config/CurrenciesConfig";
-import { Meta } from "@config/MetaConfig";
-import ApiStore from "@store/ApiStore/ApiStore";
-import { ApiResponse } from "@store/ApiStore/types";
-import ChartDataModel, {
-  ChartDataApi,
-  getInitialChartModel,
-  normalizeChartData,
-} from "@store/models/Chart/Chart";
-import {
-  CoinDetailsApi,
-  CoinListApi,
-  CoinModel,
-  CoinQueryApi,
-  normalizeCoinDetails,
-  normalizeCoinList,
-  normalizeCoinQuery,
-} from "@store/models/Coin/Coin";
-import {
-  CollectionModel,
-  getInitialCollectionModel,
-  linearizeCollection,
-  normalizeCollection,
-} from "@store/models/shared/Collection";
+import { Option } from "components/MultiDropdown/MultiDropdown";
+import Categories from "config/CategoriesConfig";
+import { ChartDaysValues } from "config/ChartConfig";
+import Currencies from "config/CurrenciesConfig";
+import Meta from "config/MetaConfig";
 import {
   action,
   computed,
@@ -32,6 +10,27 @@ import {
   observable,
   runInAction,
 } from "mobx";
+import ApiStore from "store/ApiStore/ApiStore";
+import { ApiResponse } from "store/ApiStore/types";
+import ChartDataModel, {
+  ChartDataApi,
+  getInitialChartModel,
+  normalizeChartData,
+} from "store/models/Chart/Chart";
+import CoinModel, {
+  CoinDetailsApi,
+  CoinListApi,
+  CoinQueryApi,
+  normalizeCoinDetails,
+  normalizeCoinList,
+  normalizeCoinQuery,
+} from "store/models/Coin/Coin";
+import {
+  CollectionModel,
+  getInitialCollectionModel,
+  linearizeCollection,
+  normalizeCollection,
+} from "store/models/shared/Collection";
 
 import { createQueryString, QueryParams } from "./types";
 
@@ -44,7 +43,8 @@ type PrivateFields =
   | "_query"
   | "_category"
   | "_days"
-  | "_page";
+  | "_page"
+  | "_marketCap";
 
 export default class CoinsStore {
   private readonly apiStore = new ApiStore("https://api.coingecko.com/api/v3");
@@ -56,9 +56,10 @@ export default class CoinsStore {
   private _chart: ChartDataModel = getInitialChartModel();
   private _currency: Option = Currencies[0];
   private _query: string = "";
-  private _category: string = Categories[0];
+  private _category: string = Categories[0].key;
   private _days: number = ChartDaysValues[0];
   private _page: number = 1;
+  private _marketCap: number | null = null;
 
   constructor() {
     makeObservable<CoinsStore, PrivateFields>(this, {
@@ -71,6 +72,7 @@ export default class CoinsStore {
       _category: observable,
       _days: observable,
       _page: observable,
+      _marketCap: observable,
 
       list: computed,
       coin: computed,
@@ -81,6 +83,7 @@ export default class CoinsStore {
       currency: computed,
       days: computed,
       page: computed,
+      marketCap: computed,
 
       getCoinDetails: action,
       getCoinsList: action,
@@ -118,9 +121,16 @@ export default class CoinsStore {
     return this._currency;
   }
 
+  get marketCap(): number | null {
+    return this._marketCap;
+  }
+
   public setCurrency = (newCurrency: Option) => {
     this._currency = newCurrency;
-    this.getCoinsList({ vs_currency: this.currency.value });
+    this.getCoinsList({
+      vs_currency: this.currency.value,
+      category: this._category,
+    });
   };
 
   get days(): number {
@@ -145,7 +155,11 @@ export default class CoinsStore {
     if (newPage !== this._page) {
       this._page = newPage;
       this.getCoinsList(
-        { vs_currency: this.currency.value, page: this._page },
+        {
+          vs_currency: this.currency.value,
+          page: this._page,
+          category: this._category,
+        },
         true
       );
     }
@@ -159,7 +173,7 @@ export default class CoinsStore {
     if (newQuery !== "") {
       this.getCoinsByQuery({ query: this._query });
     } else {
-      this.getCoinsList({ vs_currency: this.currency.value });
+      this.getCoinsList({ vs_currency: this.currency.value, category: this._category });
     }
   };
 
@@ -168,6 +182,11 @@ export default class CoinsStore {
   }
   public setCategory = (newCategory: string) => {
     this._category = newCategory;
+    this._page = 1;
+    this.getCoinsList({
+      vs_currency: this.currency.value,
+      category: this._category,
+    });
   };
 
   async getCoinsList(
@@ -181,13 +200,23 @@ export default class CoinsStore {
       method: "get",
       endpoint:
         "/coins/markets" +
-        createQueryString({
-          vs_currency: newQueryParams.vs_currency || "usd",
-          order: newQueryParams.order || "market_cap_desc",
-          per_page: newQueryParams.per_page || 20,
-          page: newQueryParams.page || 1,
-          sparkline: newQueryParams.sparkline || false,
-        }),
+        createQueryString(
+          (() => {
+            const data: QueryParams = {
+              vs_currency: newQueryParams.vs_currency || "usd",
+              order: newQueryParams.order || "market_cap_desc",
+              per_page: newQueryParams.per_page || 20,
+              page: newQueryParams.page || 1,
+              sparkline: newQueryParams.sparkline || false,
+            };
+            if (
+              newQueryParams.category &&
+              newQueryParams.category !== Categories[0].key
+            )
+              data.category = newQueryParams.category;
+            return data;
+          })()
+        ),
     });
 
     runInAction(() => {
@@ -235,8 +264,6 @@ export default class CoinsStore {
           const list = result.data.coins.map(normalizeCoinQuery);
           this._list = normalizeCollection(list, (listItem) => listItem.id);
         } catch (e) {
-          /* eslint-disable no-debugger, no-console */
-          console.log(e);
           this._meta = Meta.error;
         }
       } else {
@@ -310,5 +337,22 @@ export default class CoinsStore {
         this._chart = getInitialChartModel();
       }
     });
+  }
+
+  async getMarketCap(): Promise<void> {
+    let result: ApiResponse<{ data: {market_cap_change_percentage_24h_usd: string} }, null> = await this.apiStore.request({
+      method: "get",
+      endpoint:"/global"
+    });
+
+    if (result.success) {
+      try {
+        this._marketCap = Number(result.data.data.market_cap_change_percentage_24h_usd);
+      } catch (e) {
+        this._meta = Meta.error;
+      }
+    } else {
+      this._meta = Meta.error;
+    }
   }
 }

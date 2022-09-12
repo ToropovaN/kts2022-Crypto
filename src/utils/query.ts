@@ -1,5 +1,5 @@
-import Currencies from "@config/CurrenciesConfig";
-import CoinsStore from "@store/CoinsStore/CoinsStore";
+import Currencies from "config/CurrenciesConfig";
+import CoinsStore from "store/CoinsStore/CoinsStore";
 
 export type QueryParameter = { key: string; value: string };
 

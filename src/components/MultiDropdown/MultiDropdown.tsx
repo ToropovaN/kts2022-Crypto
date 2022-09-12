@@ -52,8 +52,8 @@ export const MultiDropdown = ({
       </label>
 
       {isOpened && !disabled && (
-        <div>
-          {options.map((option) => {
+        <div className={styles.MultiDropdown__list}>
+          {options.map((option, index) => {
             let isChecked =
               value.find((o) => o.key === option.key) !== undefined;
 
@@ -61,6 +61,7 @@ export const MultiDropdown = ({
               <div
                 className={styles.MultiDropdown__optionBlock}
                 key={option.key}
+                style={{ top: index * 27 + "px" }}
               >
                 <input
                   type="checkbox"

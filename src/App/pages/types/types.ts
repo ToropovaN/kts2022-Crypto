@@ -1,5 +1,7 @@
-import CoinsStore from "@store/CoinsStore/CoinsStore";
+import CoinsStore from "store/CoinsStore/CoinsStore";
 
-export type PageProps = {
+type PageProps = {
   coinsStore: CoinsStore;
 };
+
+export default PageProps;

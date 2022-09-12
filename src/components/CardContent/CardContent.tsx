@@ -1,7 +1,7 @@
 import { memo } from "react";
 
-import { Option } from "@components/MultiDropdown/MultiDropdown";
 import classNames from "classnames";
+import { Option } from "components/MultiDropdown/MultiDropdown";
 
 import styles from "./CardContent.module.scss";
 

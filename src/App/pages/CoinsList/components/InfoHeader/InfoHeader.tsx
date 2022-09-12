@@ -1,10 +1,10 @@
 import { memo } from "react";
 
-import MultiDropdown, { Option } from "@components/MultiDropdown/MultiDropdown";
-import SearchIcon from "@components/svg/SearchIcon";
-import Categories from "@config/CategoriesConfig";
-import Currencies from "@config/CurrenciesConfig";
 import classNames from "classnames";
+import MultiDropdown, { Option } from "components/MultiDropdown/MultiDropdown";
+import SearchIcon from "components/svg/SearchIcon";
+import Categories from "config/CategoriesConfig";
+import Currencies from "config/CurrenciesConfig";
 
 import styles from "./InfoHeader.module.scss";
 
@@ -14,6 +14,7 @@ type InfoHeaderProps = {
   setIsSearchActive: (isSearchActive: boolean) => void;
   category: string;
   setCategory: (category: string) => void;
+  marketCap: number | null
 };
 
 const InfoHeader = ({
@@ -22,8 +23,10 @@ const InfoHeader = ({
   category,
   setCategory,
   setIsSearchActive,
+  marketCap
 }: InfoHeaderProps) => {
-  const marketIs: number = 0;
+
+  const marketIs = marketCap || 0;
 
   return (
     <div>
@@ -37,7 +40,7 @@ const InfoHeader = ({
               }
             >
               {" "}
-              {marketIs > 0 ? " up" : " down"} {`(${marketIs}%)`}{" "}
+              {marketIs > 0 ? " up" : " down"} {`(${marketIs.toFixed(2)}%)`}{" "}
             </span>
           </div>
           <div className={styles.InfoHeader__header12}>
@@ -49,6 +52,7 @@ const InfoHeader = ({
           onClick={() => {
             setIsSearchActive(true);
           }}
+          className={styles.InfoHeader__searchIcon}
         >
           <SearchIcon isBig={true} />
         </div>
@@ -73,16 +77,18 @@ const InfoHeader = ({
         {Categories.map((cat) => {
           return (
             <div
-              key={cat}
+              key={cat.value}
               className={classNames(
                 styles.InfoHeader__category,
-                cat === category ? styles["InfoHeader__category-active"] : ""
+                cat.key === category
+                  ? styles["InfoHeader__category-active"]
+                  : ""
               )}
               onClick={() => {
-                setCategory(cat);
+                setCategory(cat.key);
               }}
             >
-              {cat}
+              {cat.value}
             </div>
           );
         })}

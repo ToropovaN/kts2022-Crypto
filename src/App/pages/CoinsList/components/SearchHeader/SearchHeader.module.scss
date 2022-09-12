@@ -1,4 +1,4 @@
-@import "@styles/variables.module.scss";
+@import "styles/variables.module.scss";
 
 .SearchHeader {
     &__Search {
@@ -14,5 +14,10 @@
         border: none;
         font-size: 12px;
         margin: auto;
+        transition: all 500ms ease;
+        &:hover {
+            color: $BlueColor;
+            font-size: 14px;
+        }
     }
 }
