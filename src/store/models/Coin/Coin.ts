@@ -35,7 +35,7 @@ export type CoinQueryApi = {
   thumb: string;
 };
 
-export type CoinModel = {
+type CoinModel = {
   id: string;
   name: string;
   symbol: string;
@@ -64,7 +64,9 @@ export const normalizeCoinList = (from: CoinListApi): CoinModel => {
     symbol: from.symbol,
     img: from.image,
     currentPrice: from.current_price,
-    priceChange: Number(from.price_change_24h.toFixed(2)),
+    priceChange: from.price_change_24h
+      ? Number(from.price_change_24h.toFixed(2))
+      : 0,
   };
 };
 
@@ -78,3 +80,5 @@ export const normalizeCoinQuery = (from: CoinQueryApi): CoinModel => {
     priceChange: 0,
   };
 };
+
+export default CoinModel;

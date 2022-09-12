@@ -20,10 +20,21 @@
 
     &__category {
         margin: 0 14px -1px 14px;
+        transition: color 500ms ease;
 
         &-active {
             color: $BlueColor;
             border-bottom: 3px solid $BlueColor;
+        }
+        &:hover {
+            color: $BlueColor;
+        }
+    }
+
+    &__searchIcon{
+        transition: all 500ms ease;
+        &:hover{
+            transform: scale(1.2); 
         }
     }
 

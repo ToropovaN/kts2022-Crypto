@@ -50,10 +50,14 @@ $width: 160px;
         background-color: $BackgroundColor;
         border: 0.5px solid $GreyColor;
         margin-top: -1px;
+        transition: color 500ms ease;
 
         &-chacked {
             color: $BlueColor;
             text-decoration: underline;
+        }
+        &:hover{
+            color: $BlueColor;
         }
     }
 

@@ -12,7 +12,7 @@ export enum LoaderSize {
 }
 
 /** Пропсы, которые принимает компонент Loader */
-type LoaderProps = {
+export type LoaderProps = {
   /**
    * Идет ли загрузка.
    * По умолчанию - true, для удобства использования
@@ -40,14 +40,14 @@ const Loader = ({
       <div
         className={classNames(
           styles.loader,
-          styles[`loader-size-${size}`],
-          className
+          styles[`loader-size-${size}`]
         )}
       >
         <div
           className={classNames(
             styles.loader__ellipse,
-            styles[`loader__ellipse-size-${size}`]
+            styles[`loader__ellipse-size-${size}`],
+            className && styles[className]
           )}
         />
         <div

@@ -21,7 +21,7 @@ export const setStoreFromQuery = (
   if (query["currency"] && query["currency"] !== store.currency.value) {
     store.setCurrency(
       Currencies.find((option) => option.value === query["currency"]) ||
-      Currencies[0]
+        Currencies[0]
     );
   }
   if (

@@ -1,7 +1,7 @@
 import { memo } from "react";
 
-import SearchIcon from "components/svg/SearchIcon";
 import classNames from "classnames";
+import SearchIcon from "components/svg/SearchIcon";
 
 import styles from "./Input.module.scss";
 

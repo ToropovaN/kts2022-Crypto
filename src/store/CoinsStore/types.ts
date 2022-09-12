@@ -13,6 +13,7 @@ export type QueryParams = {
   query?: string;
   days?: number;
   interval?: string;
+  category?: string;
 };
 
 export const createQueryString = (newQueryParams: QueryParams) => {

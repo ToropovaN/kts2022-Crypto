@@ -1,17 +1,21 @@
 import { memo } from "react";
 
-import Loader, { LoaderSize } from "components/Loader/Loader";
+import Loader, { LoaderProps } from "components/Loader/Loader";
 
 export type WithLoaderProps = React.PropsWithChildren<{
-  loading: boolean;
-  size?: LoaderSize;
+  loaderProps: LoaderProps;
 }>;
 
-const WithLoader = ({ loading, size, children }: WithLoaderProps) => {
+const WithLoader = ({ loaderProps, children }: WithLoaderProps) => {
   return (
     <div>
-      {loading && <Loader size={size}></Loader>}
-      {!loading && children}
+      {loaderProps.loading && (
+        <Loader
+          size={loaderProps.size}
+          className={loaderProps.className}
+        ></Loader>
+      )}
+      {!loaderProps.loading && children}
     </div>
   );
 };

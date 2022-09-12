@@ -3,10 +3,10 @@ import { useState } from "react";
 import Button from "components/Button/Button";
 import Card from "components/Card/Card";
 import CardContent from "components/CardContent/CardContent";
-import { LoaderSize } from "components/Loader/Loader";
 import WithLoader from "components/WithLoader/WithLoader";
-import { Meta } from "config/MetaConfig";
-import { PageProps } from "../types/types";
+import { observer } from "mobx-react-lite";
+import { useNavigate } from "react-router-dom";
+import CoinModel from "store/models/Coin/Coin";
 import useQuery from "utils/hooks/useQuery";
 import navigateToNewParameters from "utils/navigate";
 import {
@@ -14,13 +14,13 @@ import {
   setQueryParameter,
   setStoreFromQuery,
 } from "utils/query";
-import { observer } from "mobx-react-lite";
-import { useNavigate } from "react-router-dom";
 
+import PageProps from "../types/types";
 import styles from "./CoinsList.module.scss";
 import InfoHeader from "./components/InfoHeader/InfoHeader";
 import SearchHeader from "./components/SearchHeader/SearchHeader";
-import { CoinModel } from "store/models/Coin/Coin";
+import Meta from "config/MetaConfig";
+import { LoaderSize } from "components/Loader/Loader";
 
 const CoinsList = ({ coinsStore }: PageProps) => {
   const navigate = useNavigate();
@@ -36,42 +36,49 @@ const CoinsList = ({ coinsStore }: PageProps) => {
     query["active_search"] || "false"
   );
 
+  if (coinsStore.marketCap === null) {
+    coinsStore.getMarketCap();
+  }
+
   return (
     <>
-      {isSearchActive === "true" ? (
-        <SearchHeader
-          query={coinsStore.query}
-          setQuery={(query) =>
-            updateQuery({ key: "query", value: String(query) })
-          }
-          setIsSearchActive={(isSearchActive) => {
-            updateQuery({
-              key: "active_search",
-              value: String(isSearchActive),
-            });
-            setIsSearchActive(String(isSearchActive));
-          }}
-        />
-      ) : (
-        <InfoHeader
-          currency={coinsStore.currency}
-          setCurrency={(currency) =>
-            updateQuery({ key: "currency", value: currency.value })
-          }
-          category={coinsStore.category}
-          setCategory={(category) => {
-            updateQuery({ key: "category", value: category });
-          }}
-          setIsSearchActive={(isSearchActive) => {
-            updateQuery({
-              key: "active_search",
-              value: String(isSearchActive),
-            });
-            setIsSearchActive(String(isSearchActive));
-          }}
-        />
-      )}
-
+      <div className={styles.CoinsList__header}>
+        {isSearchActive === "true" ? (
+          <SearchHeader
+            query={coinsStore.query}
+            setQuery={(query) =>
+              updateQuery({ key: "query", value: String(query) })
+            }
+            setIsSearchActive={(isSearchActive) => {
+              updateQuery({
+                key: "active_search",
+                value: String(isSearchActive),
+              });
+              setIsSearchActive(String(isSearchActive));
+            }}
+          />
+        ) : (
+          <InfoHeader
+            marketCap={coinsStore.marketCap}
+            currency={coinsStore.currency}
+            setCurrency={(currency) =>
+              updateQuery({ key: "currency", value: currency.value })
+            }
+            category={coinsStore.category}
+            setCategory={(category) => {
+              updateQuery({ key: "category", value: category });
+              updateQuery({ key: "page", value: "1" });
+            }}
+            setIsSearchActive={(isSearchActive) => {
+              updateQuery({
+                key: "active_search",
+                value: String(isSearchActive),
+              });
+              setIsSearchActive(String(isSearchActive));
+            }}
+          />
+        )}
+      </div>
       <div>
         {coinsStore.list.map((coin: CoinModel) => (
           <div key={coin.id}>
@@ -95,8 +102,10 @@ const CoinsList = ({ coinsStore }: PageProps) => {
       </div>
       {isSearchActive === "false" && (
         <WithLoader
-          loading={coinsStore.meta === Meta.loading}
-          size={LoaderSize.s}
+          loaderProps={{
+            loading: coinsStore.meta === Meta.loading,
+            size: LoaderSize.s
+          }}
         >
           <div className={styles.CoinsList__row}>
             <Button

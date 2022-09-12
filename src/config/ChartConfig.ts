@@ -1,5 +1,5 @@
-import ChartDataModel from "store/models/Chart/Chart";
 import moment from "moment";
+import ChartDataModel from "store/models/Chart/Chart";
 
 export const chartOptions = {
   responsive: true,
@@ -20,8 +20,8 @@ export const chartConfigData = (
   return {
     labels: chartData?.chart
       ? chartData.chart.map((value: { x: number; y: number }) =>
-        moment(value.x).format("MMMDD")
-      )
+          moment(value.x).format("MMMDD")
+        )
       : [],
     datasets: [
       {

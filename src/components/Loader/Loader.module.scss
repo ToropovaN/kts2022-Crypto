@@ -54,19 +54,50 @@
     &-size-s {
         width: 20px;
         height: 20px;
+        &::after{
+            content: '';
+            position: absolute;
+            top: -7px;
+            left: -7px;
+            z-index: -1;
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background-color: $White;
+        }
     }
 
     &-size-m {
         width: 40px;
         height: 40px;
+        &::after{
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            z-index: -1;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: $White;
+        }
     }
 
     &-size-l {
         width: 60px;
         height: 60px;
+        &::after{
+            content: '';
+            position: absolute;
+            top: -15px;
+            left: -15px;
+            z-index: -1;
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            background-color: $White;
+        }
     }
-
-
 }
 
 @keyframes loadingAnimation {

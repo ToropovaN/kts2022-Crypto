@@ -3,9 +3,11 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "dev": "SET NODE_ENV=development&& npx webpack serve --mode development",
+    "dev": "eslint \"./src/**/*.{js,jsx,ts,tsx}\" --fix && SET NODE_ENV=development && npx webpack serve --mode development",
     "build": "SET NODE_ENV=production&& npx webpack --mode production",
-    "ts-check": "tsc --skipLibCheck --noEmit --project tsconfig.json"
+    "ts-check": "tsc --skipLibCheck --noEmit --project tsconfig.json",
+    "lint": "eslint \"./src/**/*.{js,jsx,ts,tsx}\"",
+    "lint:fix": "eslint \"./src/**/*.{js,jsx,ts,tsx}\" --fix"
   },
   "license": "MIT",
   "devDependencies": {
@@ -25,16 +27,11 @@
     "babel-loader": "^8.2.5",
     "babel-preset-mobx": "^2.0.0",
     "css-loader": "^6.7.1",
+    "eslint-config-react-app": "^7.0.1",
     "fork-ts-checker-webpack-plugin": "^7.2.13",
     "html-webpack-plugin": "^5.5.0",
     "mini-css-extract-plugin": "^2.6.1",
-    "mobx": "^6.6.2",
-    "mobx-react-lite": "^3.4.0",
     "postcss-loader": "^7.0.1",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-refresh": "^0.14.0",
-    "react-router-dom": "^6.3.0",
     "sass": "^1.54.9",
     "sass-loader": "^13.0.2",
     "style-loader": "^3.3.1",
@@ -52,6 +49,12 @@
     "classnames": "^2.3.1",
     "moment": "^2.29.4",
     "react-chartjs-2": "^4.3.1",
-    "regenerator-runtime": "^0.13.9"
+    "regenerator-runtime": "^0.13.9",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-refresh": "^0.14.0",
+    "react-router-dom": "^6.3.0",
+    "mobx": "^6.6.2",
+    "mobx-react-lite": "^3.4.0"
   }
 }

@@ -1,6 +1,12 @@
 @import "styles/variables.module.scss";
 
 .CoinsList {
+    &__header {
+        height: 174px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        }
     &__row {
         display: flex;
         justify-content: center;

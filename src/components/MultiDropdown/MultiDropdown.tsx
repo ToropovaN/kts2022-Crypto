@@ -61,7 +61,7 @@ export const MultiDropdown = ({
               <div
                 className={styles.MultiDropdown__optionBlock}
                 key={option.key}
-                style={{ top: (index * 27) + "px" }}
+                style={{ top: index * 27 + "px" }}
               >
                 <input
                   type="checkbox"
