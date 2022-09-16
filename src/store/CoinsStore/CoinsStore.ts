@@ -173,7 +173,10 @@ export default class CoinsStore {
     if (newQuery !== "") {
       this.getCoinsByQuery({ query: this._query });
     } else {
-      this.getCoinsList({ vs_currency: this.currency.value, category: this._category });
+      this.getCoinsList({
+        vs_currency: this.currency.value,
+        category: this._category,
+      });
     }
   };
 
@@ -340,19 +343,26 @@ export default class CoinsStore {
   }
 
   async getMarketCap(): Promise<void> {
-    let result: ApiResponse<{ data: {market_cap_change_percentage_24h_usd: string} }, null> = await this.apiStore.request({
+    let result: ApiResponse<
+      { data: { market_cap_change_percentage_24h_usd: string } },
+      null
+    > = await this.apiStore.request({
       method: "get",
-      endpoint:"/global"
+      endpoint: "/global",
     });
 
-    if (result.success) {
-      try {
-        this._marketCap = Number(result.data.data.market_cap_change_percentage_24h_usd);
-      } catch (e) {
+    runInAction(() => {
+      if (result.success) {
+        try {
+          this._marketCap = Number(
+            result.data.data.market_cap_change_percentage_24h_usd
+          );
+        } catch (e) {
+          this._meta = Meta.error;
+        }
+      } else {
         this._meta = Meta.error;
       }
-    } else {
-      this._meta = Meta.error;
-    }
+    });
   }
 }

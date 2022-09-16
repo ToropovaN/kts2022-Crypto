@@ -3,7 +3,9 @@ import { useState } from "react";
 import Button from "components/Button/Button";
 import Card from "components/Card/Card";
 import CardContent from "components/CardContent/CardContent";
+import { LoaderSize } from "components/Loader/Loader";
 import WithLoader from "components/WithLoader/WithLoader";
+import Meta from "config/MetaConfig";
 import { observer } from "mobx-react-lite";
 import { useNavigate } from "react-router-dom";
 import CoinModel from "store/models/Coin/Coin";
@@ -19,8 +21,6 @@ import PageProps from "../types/types";
 import styles from "./CoinsList.module.scss";
 import InfoHeader from "./components/InfoHeader/InfoHeader";
 import SearchHeader from "./components/SearchHeader/SearchHeader";
-import Meta from "config/MetaConfig";
-import { LoaderSize } from "components/Loader/Loader";
 
 const CoinsList = ({ coinsStore }: PageProps) => {
   const navigate = useNavigate();
@@ -104,7 +104,7 @@ const CoinsList = ({ coinsStore }: PageProps) => {
         <WithLoader
           loaderProps={{
             loading: coinsStore.meta === Meta.loading,
-            size: LoaderSize.s
+            size: LoaderSize.s,
           }}
         >
           <div className={styles.CoinsList__row}>

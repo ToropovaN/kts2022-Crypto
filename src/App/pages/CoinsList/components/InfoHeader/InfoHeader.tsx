@@ -5,6 +5,7 @@ import MultiDropdown, { Option } from "components/MultiDropdown/MultiDropdown";
 import SearchIcon from "components/svg/SearchIcon";
 import Categories from "config/CategoriesConfig";
 import Currencies from "config/CurrenciesConfig";
+import { observer } from "mobx-react-lite";
 
 import styles from "./InfoHeader.module.scss";
 
@@ -14,7 +15,7 @@ type InfoHeaderProps = {
   setIsSearchActive: (isSearchActive: boolean) => void;
   category: string;
   setCategory: (category: string) => void;
-  marketCap: number | null
+  marketCap: number | null;
 };
 
 const InfoHeader = ({
@@ -23,9 +24,8 @@ const InfoHeader = ({
   category,
   setCategory,
   setIsSearchActive,
-  marketCap
+  marketCap,
 }: InfoHeaderProps) => {
-
   const marketIs = marketCap || 0;
 
   return (
@@ -96,4 +96,4 @@ const InfoHeader = ({
     </div>
   );
 };
-export default memo(InfoHeader);
+export default observer(InfoHeader);

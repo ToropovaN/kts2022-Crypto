@@ -37,12 +37,7 @@ const Loader = ({
 }: LoaderProps) => {
   if (loading)
     return (
-      <div
-        className={classNames(
-          styles.loader,
-          styles[`loader-size-${size}`]
-        )}
-      >
+      <div className={classNames(styles.loader, styles[`loader-size-${size}`])}>
         <div
           className={classNames(
             styles.loader__ellipse,
