@@ -39,8 +39,8 @@ export const Button = ({
       disabled={rest.disabled || loading}
       className={classNames(
         styles.button,
-        loading || rest.disabled === true ? styles.disabled : "",
-        styles[`color-${color}`],
+        loading || rest.disabled === true ? styles.button__disabled : "",
+        styles[`button__color-${color}`],
         className
       )}
     >

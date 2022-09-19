@@ -7,22 +7,29 @@
     border-radius: 20px;
     outline: none;
     margin: 5px;
-}
+    transition: all 500ms ease;
 
-.disabled {
-    background-color: $DarkGreyColor;
-}
-
-.color {
-    &-primary {
-        color: $DarkGreyColor;
-        background-color: $BackgroundColor;
-        border: 0.5px solid $GreyColor;
+    &__disabled {
+        background-color: $DarkGreyColor;
     }
+    
+    &__color {
+        &-primary {
+            color: $DarkGreyColor;
+            background-color: $BackgroundColor;
+            border: 0.5px solid $GreyColor;
+    
+            &:hover{
+                color: $BlueColor;
+                border: 0.5px solid $BlueColor;
+            }
+        }
 
-    &-secondary {
-        color: $BlueColor;
-        background-color: $BackgroundColor;
-        border: 0.5px solid $BlueColor;
+        &-secondary {
+            color: $BlueColor;
+            background-color: $BackgroundColor;
+            border: 0.5px solid $BlueColor;
+        }
     }
 }
+

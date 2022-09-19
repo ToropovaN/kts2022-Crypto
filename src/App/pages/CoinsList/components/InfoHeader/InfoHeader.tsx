@@ -1,5 +1,3 @@
-import { memo } from "react";
-
 import classNames from "classnames";
 import MultiDropdown, { Option } from "components/MultiDropdown/MultiDropdown";
 import SearchIcon from "components/svg/SearchIcon";
